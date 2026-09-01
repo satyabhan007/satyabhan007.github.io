@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satyabhan Bhadoriya — Systems &amp; AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12181F;
+    --panel:#1B2430;
+    --panel-line:#2A3644;
+    --text:#E7EBF0;
+    --muted:#8B98A8;
+    --amber:#E8A33D;
+    --teal:#3FB68B;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* subtle blueprint grid background */
+  .grid-bg{
+    background-image:
+      linear-gradient(var(--panel-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--panel-line) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-position:center top;
+    opacity:0.35;
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+
+  header{
+    position:relative;
+    padding:96px 0 72px;
+    overflow:hidden;
+    border-bottom:1px solid var(--panel-line);
+  }
+  header .wrap{position:relative;z-index:1;}
+  .trace{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:2px;
+    background:linear-gradient(90deg, transparent, var(--amber), transparent);
+    background-size:200% 100%;
+    animation:trace 5s ease-in-out infinite;
+  }
+  @keyframes trace{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .trace{animation:none;}
+  }
+  .name{
+    font-size:2.6rem;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0 0 10px;
+  }
+  .role{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--amber);
+    font-size:1.05rem;
+    margin:0 0 26px;
+  }
+  .lede{
+    max-width:56ch;
+    color:var(--muted);
+    font-size:1.05rem;
+    margin:0 0 32px;
+  }
+  .status-row{
+    display:flex;
+    flex-wrap:wrap;
+    margin-bottom:34px;
+  }
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:var(--teal);
+    border:1px solid rgba(63,182,139,0.4);
+    background:rgba(63,182,139,0.08);
+    padding:6px 12px;
+    border-radius:3px;
+    margin-right:10px;
+    margin-bottom:10px;
+  }
+  .contact-row{
+    display:flex;
+    flex-wrap:wrap;
+    font-size:0.95rem;
+  }
+  .contact-row a{
+    color:var(--text);
+    text-decoration:none;
+    border-bottom:1px solid var(--panel-line);
+    padding-bottom:2px;
+    margin-right:20px;
+    margin-bottom:8px;
+    transition:border-color 0.15s ease, color 0.15s ease;
+  }
+  .contact-row a:hover, .contact-row a:focus-visible{
+    color:var(--amber);
+    border-color:var(--amber);
+  }
+
+  section{padding:64px 0;border-bottom:1px solid var(--panel-line);}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.95rem;
+    color:var(--muted);
+    font-weight:500;
+    margin:0 0 40px;
+    letter-spacing:0.02em;
+  }
+  h2 span{color:var(--amber);}
+
+  .timeline{position:relative;padding-left:28px;}
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:5px; top:6px; bottom:6px;
+    width:1px;
+    background:var(--panel-line);
+  }
+  .role-block{position:relative;margin-bottom:44px;}
+  .role-block:last-child{margin-bottom:0;}
+  .role-block::before{
+    content:"";
+    position:absolute;
+    left:-28px; top:6px;
+    width:9px; height:9px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--amber);
+  }
+  .role-title{font-size:1.15rem;font-weight:600;margin:0 0 2px;}
+  .role-org{color:var(--muted);font-size:0.98rem;margin:0 0 6px;}
+  .role-dates{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:var(--teal);
+    margin:0 0 14px;
+  }
+  .role-block ul{margin:0;padding-left:18px;color:var(--muted);}
+  .role-block li{margin-bottom:8px;}
+  .role-block li:last-child{margin-bottom:0;}
+
+  .project-panel{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:6px;
+    padding:36px;
+  }
+  .project-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:20px;
+  }
+  .project-title{font-size:1.3rem;font-weight:700;margin:0 0 6px;}
+  .project-sub{color:var(--muted);font-size:0.95rem;margin:0;}
+  .pilot-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:var(--amber);
+    border:1px solid rgba(232,163,61,0.4);
+    background:rgba(232,163,61,0.08);
+    padding:5px 10px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .diagram{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:28px 0;
+    flex-wrap:wrap;
+  }
+  .node{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    text-align:center;
+    color:var(--text);
+    background:var(--bg);
+    border:1px solid var(--panel-line);
+    border-radius:4px;
+    padding:12px 14px;
+    flex:1;
+    min-width:110px;
+    margin:4px;
+  }
+  .node small{display:block;color:var(--muted);font-size:0.72rem;margin-top:4px;}
+  .arrow{color:var(--panel-line);font-size:1.2rem;flex-shrink:0;}
+  .project-panel p{color:var(--muted);margin:0 0 14px;}
+  .project-panel ul{color:var(--muted);padding-left:18px;margin:0;}
+  .project-panel li{margin-bottom:8px;}
+  .tag-row{display:flex;flex-wrap:wrap;margin-top:22px;}
+  .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:var(--muted);
+    border:1px solid var(--panel-line);
+    padding:5px 10px;
+    border-radius:3px;
+    margin-right:8px;
+    margin-bottom:8px;
+  }
+
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:40px;row-gap:28px;}
+  @media (max-width:560px){.skills-grid{grid-template-columns:1fr;}}
+  .skill-cat h3{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem;
+    color:var(--amber);
+    font-weight:500;
+    margin:0 0 10px;
+  }
+  .skill-cat p{color:var(--muted);margin:0;font-size:0.95rem;}
+
+  footer{padding:64px 0 96px;}
+  footer p{color:var(--muted);max-width:50ch;margin:0 0 28px;}
+  .footer-links{display:flex;flex-wrap:wrap;}
+  .footer-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.95rem;
+    color:var(--text);
+    text-decoration:none;
+    border-bottom:1px solid var(--panel-line);
+    padding-bottom:3px;
+    margin-right:24px;
+    margin-bottom:8px;
+    transition:border-color 0.15s ease, color 0.15s ease;
+  }
+  .footer-links a:hover, .footer-links a:focus-visible{
+    color:var(--amber);
+    border-color:var(--amber);
+  }
+
+  @media (max-width:600px){
+    header{padding:64px 0 48px;}
+    .name{font-size:2rem;}
+    section{padding:48px 0;}
+    .project-panel{padding:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="trace"></div>
+  <div class="grid-bg"></div>
+  <div class="wrap">
+    <p class="role mono">Systems Engineer building toward AI/LLM Engineering</p>
+    <h1 class="name">Satyabhan Bhadoriya</h1>
+    <p class="lede">Eight years bridging industrial automation, Linux infrastructure, and IT support — now designing and shipping LLM-powered applications, including CLINIRISE, a multi-clinic WhatsApp CRM currently in pilot testing.</p>
+    <div class="status-row">
+      <span class="chip">● Immediate joiner</span>
+      <span class="chip">● Open to remote</span>
+      <span class="chip">● Pune, India</span>
+    </div>
+    <div class="contact-row">
+      <a href="mailto:satyabhan.bhadoriya@gmail.com">satyabhan.bhadoriya@gmail.com</a>
+      <a href="tel:+917972785226">+91 79727 85226</a>
+      <a href="https://github.com/satyabhan007" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#project">Featured project ↓</a>
+    </div>
+  </div>
+</header>
+
+<section id="experience">
+  <div class="wrap">
+    <h2>Experience <span>/ 2018 — present</span></h2>
+    <div class="timeline">
+
+      <div class="role-block">
+        <p class="role-title">Technical Support Engineer</p>
+        <p class="role-org">Aman Security India Pvt. Ltd. — deployed on-site at CBSE Regional Office, Pune</p>
+        <p class="role-dates">MARCH 2024 — PRESENT</p>
+        <ul>
+          <li>Resolve infrastructure and user issues using ServiceNow, Jira, and remote access tooling.</li>
+          <li>Monitor uptime and system health with Prometheus and Grafana; manage VMware environments.</li>
+          <li>Self-initiated CLINIRISE, an LLM-powered multi-clinic WhatsApp CRM, outside core duties — now in pilot testing.</li>
+        </ul>
+      </div>
+
+      <div class="role-block">
+        <p class="role-title">Linux Administrator</p>
+        <p class="role-org">Oceanic EOPS LLP — remote support for client sites, Pune</p>
+        <p class="role-dates">2023 — 2024</p>
+        <ul>
+          <li>Administered RHEL 7 servers remotely across client sites.</li>
+          <li>Applied STIG hardening controls using OpenSCAP, including Firefox browser configuration restrictions.</li>
+          <li>Tracked and resolved client tickets via Skype; monitored server performance with Grafana.</li>
+        </ul>
+      </div>
+
+      <div class="role-block">
+        <p class="role-title">Application Engineer</p>
+        <p class="role-org">Precision Automation, Pune</p>
+        <p class="role-dates">2018 — 2023</p>
+        <ul>
+          <li>Delivered end-to-end automation across ~15 projects — assembly lines, packaging, and material handling.</li>
+          <li>Programmed HMI interfaces and PLC logic (GX Works, Mitsubishi); designed in SolidWorks.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="project">
+  <div class="wrap">
+    <h2>Featured project</h2>
+    <div class="project-panel">
+      <div class="project-head">
+        <div>
+          <p class="project-title">CLINIRISE — Multi-Clinic WhatsApp CRM</p>
+          <p class="project-sub">Built end-to-end, solo — <a href="https://gen-lang-client-0155046437.web.app/" target="_blank" rel="noopener" style="color:var(--amber);">live app ↗</a></p>
+        </div>
+        <span class="pilot-badge">● Pilot testing — 2 clinics</span>
+      </div>
+
+      <div class="diagram">
+        <div class="node">WhatsApp<br><small>Business API</small></div>
+        <span class="arrow">→</span>
+        <div class="node">Gemini LLM<br><small>+ Qdrant RAG</small></div>
+        <span class="arrow">→</span>
+        <div class="node">Firestore<br><small>+ Redis cache</small></div>
+        <span class="arrow">→</span>
+        <div class="node">Firebase<br><small>Hosting</small></div>
+      </div>
+
+      <p>An LLM-powered CRM that handles patient communication and appointment workflows over WhatsApp for multiple clinics. Combines the WhatsApp Business API with the Gemini LLM and a Qdrant-backed RAG pipeline for clinic-specific knowledge, using Firestore for data and Redis (Upstash) for caching — deployed on Firebase Hosting with GitHub Actions CI/CD. Currently in pilot testing with two clinics on free trial.</p>
+      <ul>
+        <li>Owned architecture, backend integration, deployment, and iteration end to end, solo.</li>
+        <li>Integrated the WhatsApp Business API with the Gemini LLM for conversational automation.</li>
+        <li>Built a RAG pipeline using Qdrant as the vector database for clinic-specific FAQ and knowledge handling.</li>
+        <li>Used Firestore (NoSQL) for application data and Redis (Upstash) for caching and session state.</li>
+        <li>Deployed on Firebase Hosting with GitHub Actions CI/CD and Git/GitHub for version control.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">WhatsApp Business API</span>
+        <span class="tag">Gemini LLM</span>
+        <span class="tag">RAG</span>
+        <span class="tag">Qdrant</span>
+        <span class="tag">Firestore</span>
+        <span class="tag">Redis / Upstash</span>
+        <span class="tag">Firebase Hosting</span>
+        <span class="tag">GitHub Actions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-cat">
+        <h3>AI / LLM tooling</h3>
+        <p>Gemini LLM, RAG, Qdrant (vector DB), WhatsApp Business API, Ollama, Claude Code, Antigravity IDE</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Linux / cloud infrastructure</h3>
+        <p>RHEL 7, OpenSCAP, STIG Hardening, GCP, Firebase Hosting, Firestore, Redis (Upstash), Docker, Git/GitHub, GitHub Actions, Prometheus, Grafana, VMware, ServiceNow</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Automation / engineering</h3>
+        <p>HMI, GX Works (PLC programming), SolidWorks, CAD, Drafting, Assembly</p>
+      </div>
+      <div class="skill-cat">
+        <h3>Tools &amp; other</h3>
+        <p>Jira, Skype, Microsoft Office, Project management, Analytical skills</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="mono" style="color:var(--amber); font-size:0.85rem; margin-bottom:12px;">Education</p>
+    <p>B.E. Mechanical Engineering — First Class<br>Savitribai Phule Pune University, Dhole Patil College of Engineering (DPCOE), 2014</p>
+    <div class="footer-links">
+      <a href="mailto:satyabhan.bhadoriya@gmail.com">Email</a>
+      <a href="tel:+917972785226">Call</a>
+      <a href="https://github.com/satyabhan007" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="#experience">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
