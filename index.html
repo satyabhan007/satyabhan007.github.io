@@ -234,6 +234,48 @@
   }
   .skill-cat p{color:var(--muted);margin:0;font-size:0.95rem;}
 
+  .learning-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;}
+  .learning-card{
+    display:block;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:6px;
+    padding:24px;
+    text-decoration:none;
+    color:inherit;
+    transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .learning-card:hover, .learning-card:focus-visible{
+    border-color:var(--amber);
+    transform:translateY(-2px);
+  }
+  .learning-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .learning-domain{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.04em;
+    color:var(--muted);
+  }
+  .status-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    padding:4px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .status-tag.live{color:var(--teal);border:1px solid rgba(63,182,139,0.4);background:rgba(63,182,139,0.08);}
+  .status-tag.growing{color:var(--amber);border:1px solid rgba(232,163,61,0.4);background:rgba(232,163,61,0.08);}
+  .learning-title{font-size:1.1rem;font-weight:700;margin:0 0 8px;}
+  .learning-desc{color:var(--muted);font-size:0.88rem;margin:0 0 18px;}
+  .learning-cta{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--amber);}
+
   footer{padding:64px 0 96px;}
   footer p{color:var(--muted);max-width:50ch;margin:0 0 28px;}
   .footer-links{display:flex;flex-wrap:wrap;}
@@ -267,7 +309,7 @@
   <div class="trace"></div>
   <div class="grid-bg"></div>
   <div class="wrap">
-    <p class="role mono">Systems Engineer building toward AI/LLM Engineering</p>
+    <p class="role mono">Systems Engineer building toward AI/ML, Cloud &amp; Security Engineering</p>
     <h1 class="name">Satyabhan Bhadoriya</h1>
     <p class="lede">Eight years bridging industrial automation, Linux infrastructure, and IT support — now designing and shipping LLM-powered applications, including CLINIRISE, a multi-clinic WhatsApp CRM currently in pilot testing.</p>
     <div class="status-row">
@@ -281,6 +323,7 @@
       <a href="https://github.com/satyabhan007" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn</a>
       <a href="#project">Featured project ↓</a>
+      <a href="#learning">Continuous learning ↓</a>
     </div>
   </div>
 </header>
@@ -390,6 +433,46 @@
         <h3>Tools &amp; other</h3>
         <p>Jira, Skype, Microsoft Office, Project management, Analytical skills</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="learning">
+  <div class="wrap">
+    <h2>Continuous learning <span>/ &amp; continuous implementation</span></h2>
+    <p style="color:var(--muted); max-width:58ch; margin:-22px 0 36px; font-size:0.98rem;">Outside client work I write and ship production-depth, from-scratch curricula — each its own live site with runnable labs and CI. Three domains, actively growing.</p>
+    <div class="learning-grid">
+
+      <a class="learning-card" href="https://satyabhan007.github.io/AI-ML/" target="_blank" rel="noopener">
+        <div class="learning-head">
+          <span class="learning-domain">AI / ML ENGINEERING</span>
+          <span class="status-tag live">● 9 parts · 202 ch</span>
+        </div>
+        <p class="learning-title">AI-ML</p>
+        <p class="learning-desc">From-scratch autograd, tokenizers, attention &amp; embeddings through production system design, deployment, observability, and enterprise-scale AI. Runnable labs, CI-validated.</p>
+        <span class="learning-cta">Explore the curriculum →</span>
+      </a>
+
+      <a class="learning-card" href="https://satyabhan007.github.io/DevOps-Infra/" target="_blank" rel="noopener">
+        <div class="learning-head">
+          <span class="learning-domain">CLOUD &amp; DEVOPS</span>
+          <span class="status-tag growing">● expanding</span>
+        </div>
+        <p class="learning-title">DevOps-Infra</p>
+        <p class="learning-desc">Infrastructure as Code, Terraform, Docker &amp; Kubernetes from first principles — runnable labs, production scenarios, SRE playbooks. Sibling project to AI-ML.</p>
+        <span class="learning-cta">Explore the curriculum →</span>
+      </a>
+
+      <a class="learning-card" href="https://satyabhan007.github.io/linux-hpc-security/" target="_blank" rel="noopener">
+        <div class="learning-head">
+          <span class="learning-domain">LINUX, HPC &amp; SECURITY</span>
+          <span class="status-tag growing">● expanding</span>
+        </div>
+        <p class="learning-title">linux-hpc-security</p>
+        <p class="learning-desc">Linux internals, hardening &amp; DISA STIGs, HPC benchmarking, eBPF, Ansible, Slurm, RDMA fabric, security operations — runnable labs and interview Q&amp;A.</p>
+        <span class="learning-cta">Explore the curriculum →</span>
+      </a>
+
     </div>
   </div>
 </section>
