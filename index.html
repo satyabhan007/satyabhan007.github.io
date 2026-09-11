@@ -3,9 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Satyabhan Bhadoriya — Systems &amp; AI Engineer</title>
+<title>Satyabhan Bhadoriya — Systems, AI/ML &amp; Cloud Engineer</title>
+<meta name="description" content="Satyabhan Bhadoriya — Systems Engineer building toward AI/ML, Cloud &amp; Security Engineering. 8+ years across industrial automation, Linux infrastructure, and now AI systems — with 202 chapters of self-authored, production-depth curriculum and a live app in pilot.">
+<meta name="theme-color" content="#12181F">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Satyabhan Bhadoriya — Systems, AI/ML &amp; Cloud Engineer">
+<meta property="og:description" content="8+ years bridging industrial automation, Linux infrastructure, and AI/ML engineering. Building production-depth curricula across AI/ML, Cloud &amp; DevOps, and Security.">
+<meta property="og:url" content="https://satyabhan007.github.io/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#12181F;
@@ -15,6 +22,8 @@
     --muted:#8B98A8;
     --amber:#E8A33D;
     --teal:#3FB68B;
+    --violet:#9B8CF0;
+    --coral:#F0653D;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -26,10 +35,15 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+  .wrap{max-width:800px;margin:0 auto;padding:0 24px;}
   .mono{font-family:'IBM Plex Mono',monospace;}
+  .grad-text{
+    background:linear-gradient(135deg, var(--amber), var(--coral) 45%, var(--teal));
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+  }
 
-  /* subtle blueprint grid background */
+  /* subtle blueprint grid + glow behind the hero */
   .grid-bg{
     background-image:
       linear-gradient(var(--panel-line) 1px, transparent 1px),
@@ -37,14 +51,25 @@
     background-size:48px 48px;
     background-position:center top;
     opacity:0.35;
-    position:absolute;
-    inset:0;
+    position:absolute; inset:0;
     pointer-events:none;
+  }
+  .glow-blob{
+    position:absolute;
+    width:640px; height:640px;
+    top:-260px; right:-220px;
+    background:radial-gradient(circle, rgba(232,163,61,0.22), rgba(240,101,61,0.08) 45%, transparent 70%);
+    filter:blur(6px);
+    pointer-events:none;
+  }
+  .glow-blob.b2{
+    top:auto; bottom:-260px; right:auto; left:-220px;
+    background:radial-gradient(circle, rgba(63,182,139,0.16), transparent 70%);
   }
 
   header{
     position:relative;
-    padding:96px 0 72px;
+    padding:88px 0 60px;
     overflow:hidden;
     border-bottom:1px solid var(--panel-line);
   }
@@ -53,9 +78,9 @@
     position:absolute;
     top:0; left:0; right:0;
     height:2px;
-    background:linear-gradient(90deg, transparent, var(--amber), transparent);
+    background:linear-gradient(90deg, transparent, var(--coral), var(--amber), var(--teal), transparent);
     background-size:200% 100%;
-    animation:trace 5s ease-in-out infinite;
+    animation:trace 6s ease-in-out infinite;
   }
   @keyframes trace{
     0%{background-position:200% 0;}
@@ -64,32 +89,112 @@
   @media (prefers-reduced-motion: reduce){
     .trace{animation:none;}
   }
-  .name{
-    font-size:2.6rem;
-    font-weight:700;
-    letter-spacing:-0.01em;
-    margin:0 0 10px;
+
+  .eyebrow{
+    display:inline-flex; align-items:center; flex-wrap:wrap; gap:9px;
+    max-width:100%;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.8rem; font-weight:600;
+    letter-spacing:0.02em;
+    color:var(--coral);
+    border:1px solid rgba(240,101,61,0.4);
+    background:rgba(240,101,61,0.08);
+    padding:7px 14px 7px 12px;
+    border-radius:16px;
+    margin-bottom:26px;
   }
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--coral);
+    box-shadow:0 0 0 3px rgba(240,101,61,0.22);
+  }
+
   .role{
     font-family:'IBM Plex Mono',monospace;
-    color:var(--amber);
-    font-size:1.05rem;
-    margin:0 0 26px;
+    color:var(--muted);
+    font-size:1rem;
+    letter-spacing:0.02em;
+    margin:0 0 14px;
+  }
+  .name{
+    font-size:clamp(2.4rem, 7vw, 4.2rem);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.05;
+    margin:0 0 20px;
+  }
+  .hook{
+    font-size:clamp(1.15rem, 2.6vw, 1.4rem);
+    font-weight:600;
+    color:var(--text);
+    max-width:50ch;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
   }
   .lede{
-    max-width:56ch;
+    max-width:58ch;
     color:var(--muted);
-    font-size:1.05rem;
-    margin:0 0 32px;
+    font-size:1.03rem;
+    margin:0 0 36px;
   }
-  .status-row{
-    display:flex;
-    flex-wrap:wrap;
-    margin-bottom:34px;
+
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px 20px;
+    padding:22px 0;
+    margin:0 0 34px;
+    border-top:1px solid var(--panel-line);
+    border-bottom:1px solid var(--panel-line);
   }
+  .stat .num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:1.9rem; font-weight:700; line-height:1;
+  }
+  .stat .label{
+    font-size:0.76rem;
+    color:var(--muted);
+    margin-top:7px;
+    line-height:1.4;
+  }
+  @media (max-width:600px){
+    .stat-strip{grid-template-columns:repeat(2, 1fr);}
+  }
+
+  .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 22px;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.92rem; font-weight:600;
+    padding:12px 20px;
+    border-radius:6px;
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--amber), var(--coral));
+    color:#181109;
+    border:1px solid transparent;
+  }
+  .btn-primary:hover, .btn-primary:focus-visible{
+    transform:translateY(-2px);
+    box-shadow:0 10px 28px rgba(240,101,61,0.32);
+  }
+  .btn-outline{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--panel-line);
+  }
+  .btn-outline:hover, .btn-outline:focus-visible{
+    border-color:var(--teal);
+    color:var(--teal);
+    transform:translateY(-2px);
+  }
+
+  .status-row{display:flex;flex-wrap:wrap;margin-bottom:22px;}
   .chip{
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.82rem;
+    font-size:0.8rem;
     color:var(--teal);
     border:1px solid rgba(63,182,139,0.4);
     background:rgba(63,182,139,0.08);
@@ -98,17 +203,14 @@
     margin-right:10px;
     margin-bottom:10px;
   }
-  .contact-row{
-    display:flex;
-    flex-wrap:wrap;
-    font-size:0.95rem;
-  }
+  .contact-row{display:flex;flex-wrap:wrap;font-size:0.9rem;}
   .contact-row a{
-    color:var(--text);
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--muted);
     text-decoration:none;
     border-bottom:1px solid var(--panel-line);
     padding-bottom:2px;
-    margin-right:20px;
+    margin-right:22px;
     margin-bottom:8px;
     transition:border-color 0.15s ease, color 0.15s ease;
   }
@@ -120,14 +222,28 @@
   section{padding:64px 0;border-bottom:1px solid var(--panel-line);}
   section:last-of-type{border-bottom:none;}
   h2{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.95rem;
-    color:var(--muted);
-    font-weight:500;
+    display:flex; align-items:baseline; flex-wrap:wrap; gap:12px;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:1.55rem;
+    font-weight:800;
+    color:var(--text);
     margin:0 0 40px;
-    letter-spacing:0.02em;
+    letter-spacing:-0.01em;
   }
-  h2 span{color:var(--amber);}
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; font-weight:600;
+    color:var(--amber);
+    background:rgba(232,163,61,0.1);
+    border:1px solid rgba(232,163,61,0.35);
+    border-radius:4px;
+    padding:3px 8px;
+  }
+  .sec-sub{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; font-weight:400;
+    color:var(--muted);
+  }
 
   .timeline{position:relative;padding-left:28px;}
   .timeline::before{
@@ -148,7 +264,7 @@
     background:var(--bg);
     border:2px solid var(--amber);
   }
-  .role-title{font-size:1.15rem;font-weight:600;margin:0 0 2px;}
+  .role-title{font-size:1.15rem;font-weight:700;margin:0 0 2px;}
   .role-org{color:var(--muted);font-size:0.98rem;margin:0 0 6px;}
   .role-dates{
     font-family:'IBM Plex Mono',monospace;
@@ -161,8 +277,10 @@
   .role-block li:last-child{margin-bottom:0;}
 
   .project-panel{
+    position:relative;
     background:var(--panel);
     border:1px solid var(--panel-line);
+    border-top:3px solid var(--coral);
     border-radius:6px;
     padding:36px;
   }
@@ -174,14 +292,14 @@
     gap:16px;
     margin-bottom:20px;
   }
-  .project-title{font-size:1.3rem;font-weight:700;margin:0 0 6px;}
+  .project-title{font-size:1.35rem;font-weight:800;margin:0 0 6px;}
   .project-sub{color:var(--muted);font-size:0.95rem;margin:0;}
   .pilot-badge{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.78rem;
-    color:var(--amber);
-    border:1px solid rgba(232,163,61,0.4);
-    background:rgba(232,163,61,0.08);
+    color:var(--coral);
+    border:1px solid rgba(240,101,61,0.4);
+    background:rgba(240,101,61,0.08);
     padding:5px 10px;
     border-radius:3px;
     white-space:nowrap;
@@ -223,32 +341,48 @@
     margin-bottom:8px;
   }
 
-  .skills-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:40px;row-gap:28px;}
+  .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   @media (max-width:560px){.skills-grid{grid-template-columns:1fr;}}
+  .skill-cat{
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    border-radius:6px;
+    padding:20px 22px;
+    transition:border-color 0.15s ease;
+  }
+  .skill-cat:hover{border-color:var(--amber);}
   .skill-cat h3{
+    display:flex; align-items:center; gap:9px;
     font-family:'IBM Plex Mono',monospace;
     font-size:0.85rem;
     color:var(--amber);
-    font-weight:500;
+    font-weight:600;
     margin:0 0 10px;
   }
-  .skill-cat p{color:var(--muted);margin:0;font-size:0.95rem;}
+  .skill-cat p{color:var(--muted);margin:0;font-size:0.92rem;}
 
-  .learning-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;}
+  .learning-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
   .learning-card{
     display:block;
     background:var(--panel);
     border:1px solid var(--panel-line);
+    border-top:3px solid var(--accent, var(--amber));
     border-radius:6px;
     padding:24px;
     text-decoration:none;
     color:inherit;
-    transition:border-color 0.15s ease, transform 0.15s ease;
+    transition:border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   }
   .learning-card:hover, .learning-card:focus-visible{
-    border-color:var(--amber);
-    transform:translateY(-2px);
+    transform:translateY(-3px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
   }
+  .learning-card.c-amber{--accent:var(--amber);}
+  .learning-card.c-teal{--accent:var(--teal);}
+  .learning-card.c-violet{--accent:var(--violet);}
+  .learning-card.c-amber:hover{border-color:var(--amber);}
+  .learning-card.c-teal:hover{border-color:var(--teal);}
+  .learning-card.c-violet:hover{border-color:var(--violet);}
   .learning-head{
     display:flex;
     justify-content:space-between;
@@ -261,7 +395,7 @@
     font-family:'IBM Plex Mono',monospace;
     font-size:0.7rem;
     letter-spacing:0.04em;
-    color:var(--muted);
+    color:var(--accent, var(--muted));
   }
   .status-tag{
     font-family:'IBM Plex Mono',monospace;
@@ -272,12 +406,13 @@
   }
   .status-tag.live{color:var(--teal);border:1px solid rgba(63,182,139,0.4);background:rgba(63,182,139,0.08);}
   .status-tag.growing{color:var(--amber);border:1px solid rgba(232,163,61,0.4);background:rgba(232,163,61,0.08);}
-  .learning-title{font-size:1.1rem;font-weight:700;margin:0 0 8px;}
+  .learning-title{font-size:1.15rem;font-weight:800;margin:0 0 8px;}
   .learning-desc{color:var(--muted);font-size:0.88rem;margin:0 0 18px;}
-  .learning-cta{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--amber);}
+  .learning-cta{font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:var(--accent, var(--amber));font-weight:600;}
 
   footer{padding:64px 0 96px;}
-  footer p{color:var(--muted);max-width:50ch;margin:0 0 28px;}
+  footer p{color:var(--muted);max-width:52ch;margin:0 0 28px;}
+  .footer-tag{font-size:1.05rem;font-weight:600;color:var(--text);margin:0 0 28px;max-width:46ch;}
   .footer-links{display:flex;flex-wrap:wrap;}
   .footer-links a{
     font-family:'IBM Plex Mono',monospace;
@@ -296,10 +431,10 @@
   }
 
   @media (max-width:600px){
-    header{padding:64px 0 48px;}
-    .name{font-size:2rem;}
+    header{padding:56px 0 44px;}
     section{padding:48px 0;}
-    .project-panel{padding:24px;}
+    .project-panel{padding:22px;}
+    h2{font-size:1.3rem;}
   }
 </style>
 </head>
@@ -308,20 +443,30 @@
 <header>
   <div class="trace"></div>
   <div class="grid-bg"></div>
+  <div class="glow-blob"></div>
+  <div class="glow-blob b2"></div>
   <div class="wrap">
-    <p class="role mono">Systems Engineer building toward AI/ML, Cloud &amp; Security Engineering</p>
-    <h1 class="name">Satyabhan Bhadoriya</h1>
-    <p class="lede">Eight years bridging industrial automation, Linux infrastructure, and IT support — now designing and shipping LLM-powered applications, including CLINIRISE, a multi-clinic WhatsApp CRM currently in pilot testing.</p>
-    <div class="status-row">
-      <span class="chip">● Immediate joiner</span>
-      <span class="chip">● Open to remote</span>
-      <span class="chip">● Pune, India</span>
+    <span class="eyebrow"><span class="dot"></span>IMMEDIATE JOINER · OPEN TO REMOTE · PUNE, INDIA</span>
+    <p class="role mono">SYSTEMS ENGINEER → AI/ML · CLOUD · SECURITY</p>
+    <h1 class="name grad-text">Satyabhan Bhadoriya</h1>
+    <p class="hook">I build things that don't break — assembly lines, Linux fleets, and now AI systems.</p>
+    <p class="lede">Eight years bridging industrial automation, Linux infrastructure, and IT support — now designing and shipping LLM-powered applications, including CLINIRISE, a multi-clinic WhatsApp CRM currently in pilot testing, alongside 202 chapters of self-authored, production-depth AI/ML curriculum.</p>
+
+    <div class="stat-strip">
+      <div class="stat"><div class="num grad-text">8+</div><div class="label">Years — automation → Linux → AI/ML</div></div>
+      <div class="stat"><div class="num grad-text">202</div><div class="label">Chapters authored, AI-ML curriculum</div></div>
+      <div class="stat"><div class="num grad-text">15+</div><div class="label">Automation projects delivered</div></div>
+      <div class="stat"><div class="num grad-text">3</div><div class="label">Domains — AI/ML · Cloud · Security</div></div>
     </div>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="mailto:satyabhan.bhadoriya@gmail.com">✉ Email me</a>
+      <a class="btn btn-outline" href="https://github.com/satyabhan007" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+
     <div class="contact-row">
-      <a href="mailto:satyabhan.bhadoriya@gmail.com">satyabhan.bhadoriya@gmail.com</a>
       <a href="tel:+917972785226">+91 79727 85226</a>
-      <a href="https://github.com/satyabhan007" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn</a>
       <a href="#project">Featured project ↓</a>
       <a href="#learning">Continuous learning ↓</a>
     </div>
@@ -330,7 +475,7 @@
 
 <section id="experience">
   <div class="wrap">
-    <h2>Experience <span>/ 2018 — present</span></h2>
+    <h2><span class="sec-num">01</span> Experience <span class="sec-sub">/ 2018 — present</span></h2>
     <div class="timeline">
 
       <div class="role-block">
@@ -371,12 +516,12 @@
 
 <section id="project">
   <div class="wrap">
-    <h2>Featured project</h2>
+    <h2><span class="sec-num">02</span> Featured project <span class="sec-sub">/ shipped solo, end to end</span></h2>
     <div class="project-panel">
       <div class="project-head">
         <div>
           <p class="project-title">CLINIRISE — Multi-Clinic WhatsApp CRM</p>
-          <p class="project-sub">Built end-to-end, solo — <a href="https://gen-lang-client-0155046437.web.app/" target="_blank" rel="noopener" style="color:var(--amber);">live app ↗</a></p>
+          <p class="project-sub">Built end-to-end, solo — <a href="https://gen-lang-client-0155046437.web.app/" target="_blank" rel="noopener" style="color:var(--coral);">live app ↗</a></p>
         </div>
         <span class="pilot-badge">● Pilot testing — 2 clinics</span>
       </div>
@@ -415,22 +560,22 @@
 
 <section id="skills">
   <div class="wrap">
-    <h2>Skills</h2>
+    <h2><span class="sec-num">03</span> Skills <span class="sec-sub">/ what I actually use, daily</span></h2>
     <div class="skills-grid">
       <div class="skill-cat">
-        <h3>AI / LLM tooling</h3>
+        <h3>🧠 AI / LLM tooling</h3>
         <p>Gemini LLM, RAG, Qdrant (vector DB), WhatsApp Business API, Ollama, Claude Code, Antigravity IDE</p>
       </div>
       <div class="skill-cat">
-        <h3>Linux / cloud infrastructure</h3>
+        <h3>☁️ Linux / cloud infrastructure</h3>
         <p>RHEL 7, OpenSCAP, STIG Hardening, GCP, Firebase Hosting, Firestore, Redis (Upstash), Docker, Git/GitHub, GitHub Actions, Prometheus, Grafana, VMware, ServiceNow</p>
       </div>
       <div class="skill-cat">
-        <h3>Automation / engineering</h3>
+        <h3>⚙️ Automation / engineering</h3>
         <p>HMI, GX Works (PLC programming), SolidWorks, CAD, Drafting, Assembly</p>
       </div>
       <div class="skill-cat">
-        <h3>Tools &amp; other</h3>
+        <h3>🗂️ Tools &amp; other</h3>
         <p>Jira, Skype, Microsoft Office, Project management, Analytical skills</p>
       </div>
     </div>
@@ -439,13 +584,13 @@
 
 <section id="learning">
   <div class="wrap">
-    <h2>Continuous learning <span>/ &amp; continuous implementation</span></h2>
+    <h2><span class="sec-num">04</span> Continuous learning <span class="sec-sub">/ &amp; continuous implementation</span></h2>
     <p style="color:var(--muted); max-width:58ch; margin:-22px 0 36px; font-size:0.98rem;">Outside client work I write and ship production-depth, from-scratch curricula — each its own live site with runnable labs and CI. Three domains, actively growing.</p>
     <div class="learning-grid">
 
-      <a class="learning-card" href="https://satyabhan007.github.io/AI-ML/" target="_blank" rel="noopener">
+      <a class="learning-card c-amber" href="https://satyabhan007.github.io/AI-ML/" target="_blank" rel="noopener">
         <div class="learning-head">
-          <span class="learning-domain">AI / ML ENGINEERING</span>
+          <span class="learning-domain">🧠 AI / ML ENGINEERING</span>
           <span class="status-tag live">● 9 parts · 202 ch</span>
         </div>
         <p class="learning-title">AI-ML</p>
@@ -453,9 +598,9 @@
         <span class="learning-cta">Explore the curriculum →</span>
       </a>
 
-      <a class="learning-card" href="https://satyabhan007.github.io/DevOps-Infra/" target="_blank" rel="noopener">
+      <a class="learning-card c-teal" href="https://satyabhan007.github.io/DevOps-Infra/" target="_blank" rel="noopener">
         <div class="learning-head">
-          <span class="learning-domain">CLOUD &amp; DEVOPS</span>
+          <span class="learning-domain">☁️ CLOUD &amp; DEVOPS</span>
           <span class="status-tag growing">● expanding</span>
         </div>
         <p class="learning-title">DevOps-Infra</p>
@@ -463,9 +608,9 @@
         <span class="learning-cta">Explore the curriculum →</span>
       </a>
 
-      <a class="learning-card" href="https://satyabhan007.github.io/linux-hpc-security/" target="_blank" rel="noopener">
+      <a class="learning-card c-violet" href="https://satyabhan007.github.io/linux-hpc-security/" target="_blank" rel="noopener">
         <div class="learning-head">
-          <span class="learning-domain">LINUX, HPC &amp; SECURITY</span>
+          <span class="learning-domain">🛡️ LINUX, HPC &amp; SECURITY</span>
           <span class="status-tag growing">● expanding</span>
         </div>
         <p class="learning-title">linux-hpc-security</p>
@@ -479,6 +624,7 @@
 
 <footer>
   <div class="wrap">
+    <p class="footer-tag grad-text">Always building. Always shipping. Always learning in public.</p>
     <p class="mono" style="color:var(--amber); font-size:0.85rem; margin-bottom:12px;">Education</p>
     <p>B.E. Mechanical Engineering — First Class<br>Savitribai Phule Pune University, Dhole Patil College of Engineering (DPCOE), 2014</p>
     <div class="footer-links">
