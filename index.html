@@ -515,7 +515,7 @@
     <p class="role mono">AI/LLM SYSTEMS ENGINEER · AUTONOMOUS AGENTS · LOW-LATENCY RAG · PRODUCTION SYSTEMS</p>
     <h1 class="name grad-text">Satyabhan Bhadoriya</h1>
     <p class="hook">I build things that don't break — assembly lines, Linux fleets, and now AI systems.</p>
-    <p class="lede">AI/LLM Systems Engineer with 2+ years building production autonomous agents, high-throughput RAG systems and latency-optimized inference pipelines — plus 8+ years of enterprise engineering discipline across Linux/RHEL systems and STIG security compliance. Creator of <strong>CLINIRISE</strong>, a multi-clinic WhatsApp CRM solo-built end to end with <strong>860+ automated tests</strong> and in active pilot with 2 clinic clients. Author of <strong>300+ chapters</strong> of CI-validated open-source AI/ML, DevOps-Infra and Linux-HPC-Security curricula.</p>
+    <p class="lede">AI/LLM Systems Engineer with 2+ years building production autonomous agents, high-throughput RAG systems and latency-optimized inference pipelines. Backed by 8+ years of enterprise engineering discipline across Linux/RHEL systems and STIG security compliance. Creator of <strong>CLINIRISE</strong>, a multi-clinic WhatsApp CRM solo-built end to end with <strong>860+ automated tests</strong> — now in active pilot with 2 clinic clients. Author of <strong>300+ chapters</strong> of CI-validated open-source AI/ML, DevOps-Infra and Linux-HPC-Security curricula.</p>
 
     <div class="stat-strip">
       <div class="stat"><div class="num grad-text">8+</div><div class="label">Years — automation → Linux → AI/LLM</div></div>
@@ -551,8 +551,8 @@
         <ul>
           <li><strong>CLINIRISE (self-initiated &amp; independently built):</strong> a production LLM-powered multi-clinic WhatsApp CRM developed outside core duties — applying Gen AI, Python, LLMs, RAG, Vertex AI, React and TypeScript — currently in pilot testing with real clinic clients.</li>
           <li><strong>Voice AI Calling Agent:</strong> engineered an ultra-low-latency inbound/outbound voice agent pipeline integrating the Tabbly platform, ElevenLabs, Bolna AI, Groq (fast LLM inference) and Azure STT for automated STT/TTS conversational flows.</li>
-          <li><strong>LLM Evals &amp; Cost Optimization:</strong> benchmarked multiple STT, LLM inference and TTS platforms against Time-to-First-Token (TTFT), error drift and token unit costs to select the most cost-effective production voice stack. Applied the <strong>TypeSafe Jev</strong> typed decision model (Choice/Score/Boolean) for fast, low-cost verification and guardrail enforcement in agentic workflows, in place of full LLM calls for deterministic checks.</li>
-          <li><strong>AI-Assisted Engineering &amp; Infrastructure:</strong> used Claude Code and the Antigravity IDE as an AI-assisted coding workflow with GitHub Actions CI/CD; monitored infrastructure health via Prometheus &amp; Grafana; managed virtualized production environments with VMware; resolved issues via ServiceNow ticketing and Jira task tracking.</li>
+          <li><strong>LLM Evals &amp; Cost Optimization:</strong> benchmarked multiple STT, LLM inference and TTS platforms against Time-to-First-Token (TTFT), error drift and token unit costs. This selected the most cost-effective production voice stack. Applied the <strong>TypeSafe Jev</strong> typed decision model (Choice/Score/Boolean) for fast, low-cost verification and guardrail enforcement in agentic workflows, in place of full LLM calls for deterministic checks.</li>
+          <li><strong>AI-Assisted Engineering &amp; Infrastructure:</strong> used Claude Code and the Antigravity IDE as an AI-assisted coding workflow with GitHub Actions CI/CD. Monitored infrastructure health via Prometheus &amp; Grafana and managed virtualized production environments with VMware. Resolved issues through ServiceNow ticketing and Jira task tracking.</li>
         </ul>
       </div>
 
@@ -605,12 +605,12 @@
         <div class="node">Firebase<br><small>Hosting</small></div>
       </div>
 
-      <p>An LLM-powered conversational CRM handling patient communication and appointment workflows over WhatsApp for multiple clinics. It combines the WhatsApp Business API with the Google Gemini LLM and a Qdrant-backed hybrid RAG pipeline for clinic-specific knowledge, backed by an Express / Node.js service on GCP Cloud Run, Firestore NoSQL and two-tier Redis caching — shipped on Firebase Hosting with GitHub Actions CI/CD. Currently in pilot testing with two clinics.</p>
+      <p>An LLM-powered conversational CRM handling patient communication and appointment workflows over WhatsApp for multiple clinics. It pairs the WhatsApp Business API with the Google Gemini LLM and a Qdrant-backed hybrid RAG pipeline for clinic-specific knowledge. The service runs on GCP Cloud Run behind an Express / Node.js backend, with Firestore NoSQL and two-tier Redis caching. Delivery is Firebase Hosting with GitHub Actions CI/CD. Currently in pilot testing with two clinics.</p>
       <ul>
         <li><strong>End-to-end autonomous agent:</strong> multi-turn patient scheduling, clinic FAQs and autonomous booking with 2-way Google Calendar OAuth sync.</li>
-        <li><strong>Full-stack architecture:</strong> React 18 + TypeScript + Vite frontend, Express / Node.js backend on GCP Cloud Run, Firestore NoSQL, Turborepo monorepo — <strong>860+ automated tests</strong> (Vitest unit + Cypress E2E + k6 load) plus BigQuery &amp; Looker Studio per-clinic analytics.</li>
-        <li><strong>High-throughput RAG:</strong> hybrid Qdrant vector retrieval with two-tier Redis caching targeting sub-2-second response latency; semantic intent routing separates deterministic transactional actions from generative queries, cutting average LLM token consumption by <strong>~40%</strong>.</li>
-        <li><strong>Production reliability:</strong> multi-tier AI resiliency (Gemini Flash → Flash-Lite → template fallback), clinical guardrails with human handoff escalation, DPDP Act consent &amp; PII redaction, and GitHub Actions CI/CD with Workload Identity Federation (zero service-account keys).</li>
+        <li><strong>Full-stack architecture:</strong> React 18 + TypeScript + Vite frontend, Express / Node.js backend on GCP Cloud Run, Firestore NoSQL, Turborepo monorepo. Verified by <strong>860+ automated tests</strong> (Vitest unit + Cypress E2E + k6 load), with BigQuery &amp; Looker Studio analytics per clinic.</li>
+        <li><strong>High-throughput RAG:</strong> hybrid Qdrant vector retrieval with two-tier Redis caching, targeting sub-2-second response latency. Semantic intent routing separates deterministic transactional actions from generative queries, cutting average LLM token consumption by <strong>~40%</strong>.</li>
+        <li><strong>Production reliability:</strong> multi-tier AI resiliency (Gemini Flash → Flash-Lite → template fallback) and clinical guardrails with human handoff escalation. DPDP Act consent and PII redaction are enforced, and CI/CD runs on GitHub Actions with Workload Identity Federation — zero service-account keys.</li>
         <li><strong>Scale target:</strong> 1,000 clinics × 100 patients/day. Owned architecture, backend integration, deployment and iteration solo.</li>
       </ul>
       <div class="tag-row">
@@ -683,7 +683,7 @@
           <span class="status-tag live">● 9 parts · 138 ch</span>
         </div>
         <p class="learning-title">AI-ML</p>
-        <p class="learning-desc">From-scratch autograd, BPE tokenizers, scaled dot-product attention and embeddings through production system design, deployment, observability and enterprise-scale AI. Parts 1–5 build the primitives in pure Python; Parts 6–9 operate the standard production stack.</p>
+        <p class="learning-desc">From-scratch autograd, BPE tokenizers, scaled dot-product attention and embeddings — then production system design, deployment, observability and enterprise-scale AI. Parts 1–5 build the primitives in pure Python; Parts 6–9 operate the standard production stack.</p>
         <span class="learning-cta">Explore the curriculum →</span>
         <p class="learning-meta">69/69 automated CI checks · zero dependencies · 6 live browser labs</p>
       </a>
@@ -716,7 +716,7 @@
       <h3>★ REPOSITORIES &amp; VERIFIED CI</h3>
       <ul>
         <li><strong>AI-ML</strong> — <a href="https://github.com/satyabhan007/ai-lab" target="_blank" rel="noopener">github.com/satyabhan007/ai-lab</a>: 9-course, 138-chapter curriculum built from scratch in pure Python — scalar autograd engine with topological backpropagation (micrograd), BPE tokenizer, scaled dot-product attention with causal masks, Word2Vec embeddings, RAG + ReAct agent loops, LoRA/DPO fine-tuning, INT8 quantization, KV-cache, continuous batching, and vLLM / KServe / Triton model serving. <strong>69/69 automated CI checks passing.</strong></li>
-        <li><strong>DevOps-Infra</strong> — <a href="https://github.com/satyabhan007/DevOps-Infra" target="_blank" rel="noopener">github.com/satyabhan007/DevOps-Infra</a>: Terraform IaC (modules, remote state &amp; locking, drift detection, policy-as-code), Docker multi-stage hardened builds, Kubernetes (validated manifests, CRDs/operators, Helm, GitOps, service mesh, autoscaling), and SRE playbooks (SLI/SLO/error budgets, golden signals, incident runbooks).</li>
+        <li><strong>DevOps-Infra</strong> — <a href="https://github.com/satyabhan007/DevOps-Infra" target="_blank" rel="noopener">github.com/satyabhan007/DevOps-Infra</a>: Terraform IaC (modules, remote state &amp; locking, drift detection, policy-as-code), Docker multi-stage hardened builds, and Kubernetes (validated manifests, CRDs/operators, Helm, GitOps, service mesh, autoscaling). Includes SRE playbooks for SLI/SLO error budgets, golden signals and incident runbooks.</li>
         <li><strong>Linux-HPC-Security</strong> — <a href="https://github.com/satyabhan007/linux-hpc-security" target="_blank" rel="noopener">github.com/satyabhan007/linux-hpc-security</a>: systems engineering curriculum (105 chapters across 21 modules · 126 lessons · 63 runnable labs) — eBPF &amp; observability, Ansible at scale, Slurm HPC &amp; MPI, RDMA/InfiniBand fabric, Lustre/BeeGFS parallel storage, kernel tuning (NUMA, cgroups v2, hugepages), SOC/NOC operations, Splunk SIEM, chaos engineering, and red/blue/purple teaming.</li>
       </ul>
     </div>
@@ -727,7 +727,7 @@
   <div class="wrap">
     <p class="footer-tag grad-text">Always building. Always shipping. Always learning in public.</p>
     <p class="mono" style="color:var(--amber); font-size:0.85rem; margin-bottom:12px;">Profile</p>
-    <p>AI/LLM Systems Engineer with 2+ years building production autonomous AI agents, high-throughput RAG systems and latency-optimized inference pipelines, plus 8+ years of enterprise engineering discipline across Linux/RHEL systems and STIG security compliance. Creator of <strong>CLINIRISE</strong> — a production multi-clinic WhatsApp CRM powered by Google Gemini, Qdrant, Redis, a React 18 / TypeScript frontend and GCP Cloud Run — solo-built end to end with 860+ automated tests and currently in active pilot with 2 clinic clients. Applies typed decision models (TypeSafe Jev) for fast verification and guardrail enforcement in agentic workflows. Author of 300+ chapters of open-source AI/ML, DevOps-Infra and Linux-HPC-Security engineering curricula with CI-validated labs.</p>
+    <p>AI/LLM Systems Engineer with 2+ years building production autonomous AI agents, high-throughput RAG systems and latency-optimized inference pipelines. Adds 8+ years of enterprise engineering discipline across Linux/RHEL systems and STIG security compliance. Creator of <strong>CLINIRISE</strong> — a production multi-clinic WhatsApp CRM powered by Google Gemini, Qdrant, Redis, a React 18 / TypeScript frontend and GCP Cloud Run. Solo-built end to end with 860+ automated tests, and now in active pilot with 2 clinic clients. Applies typed decision models (TypeSafe Jev) for fast verification and guardrail enforcement in agentic workflows. Author of 300+ chapters of open-source AI/ML, DevOps-Infra and Linux-HPC-Security engineering curricula with CI-validated labs.</p>
     <p class="mono" style="color:var(--amber); font-size:0.85rem; margin-bottom:12px;">Education</p>
     <p>B.E. Mechanical Engineering — First Class<br>Savitribai Phule Pune University, Dhole Patil College of Engineering (DPCOE), 2014</p>
     <div class="footer-links">
