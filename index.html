@@ -760,6 +760,31 @@
       <a href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn</a>
       <a href="#experience">Back to top ↑</a>
     </div>
+    
+    <div style="margin-top: 32px; border-top: 1px solid var(--panel-line); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <span style="color: var(--muted); font-size: 0.8rem; font-family: 'IBM Plex Mono', monospace; display: block; margin-bottom: 8px;">VISITOR METRICS</span>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fsatyabhan007.github.io&count_bg=%23F0653D&title_bg=%231B2430&icon=&icon_color=%23E7E7E7&title=VISITS&edge_flat=false" alt="Visitor Count">
+      </div>
+      <div>
+        <span style="color: var(--muted); font-size: 0.8rem; font-family: 'IBM Plex Mono', monospace; display: block; margin-bottom: 8px; text-align: right;">YOUR IP ADDRESS</span>
+        <span id="visitor-ip" class="mono" style="color: var(--teal); background: rgba(63,182,139,0.1); padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(63,182,139,0.3); font-size: 0.9rem;">Fetching...</span>
+      </div>
+    </div>
+    
+    <script>
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('visitor-ip').textContent = data.ip;
+        })
+        .catch(error => {
+          document.getElementById('visitor-ip').textContent = 'Unavailable';
+          document.getElementById('visitor-ip').style.color = 'var(--coral)';
+          document.getElementById('visitor-ip').style.borderColor = 'rgba(240,101,61,0.3)';
+          document.getElementById('visitor-ip').style.background = 'rgba(240,101,61,0.1)';
+        });
+    </script>
   </div>
 </footer>
 
