@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production RAG, Vector DBs & GraphRAG | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn active">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 02: Retrieval & Search</span>
+      <h1>Production RAG, Vector DBs & GraphRAG</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--blue);">
+  <h2>Enterprise RAG, High-Dimensional Vector Search & GraphRAG</h2>
+  <p>Comprehensive coverage of <strong>QA-02, QA-15, QA-17, QA-23, and QA-37</strong>. Master multi-stage hybrid retrieval, Reciprocal Rank Fusion, 50M vector memory scaling, and Leiden community detection.</p>
+</div>
+
+<!-- Interactive Step Explainer for RAG Pipeline -->
+<div class="explainer-box">
+  <h3 style="margin-top:0;">Interactive RAG Pipeline Flow Explainer</h3>
+  <p style="font-size:14px; color:var(--mut);">Click each pipeline phase to see the exact production behavior, algorithms, and latency budgets:</p>
+  
+  <div style="display:grid; grid-template-columns: 1fr 1.5fr; gap:16px;">
+    <div>
+      <div class="interactive-step active" onclick="showRAGStep(0)">
+        <div class="step-num">1</div>
+        <div><b>Query HyDE & Decomposition</b><br><span style="font-size:12px; color:var(--mut);">Resolves ambiguous intent (&lt;40ms)</span></div>
+      </div>
+      <div class="interactive-step" onclick="showRAGStep(1)">
+        <div class="step-num">2</div>
+        <div><b>Redis Semantic Vector Cache</b><br><span style="font-size:12px; color:var(--mut);">Cosine similarity &ge; 0.96 (&lt;15ms)</span></div>
+      </div>
+      <div class="interactive-step" onclick="showRAGStep(2)">
+        <div class="step-num">3</div>
+        <div><b>Two-Stage Hybrid Retrieval</b><br><span style="font-size:12px; color:var(--mut);">Dense (HNSW) + Sparse (BM25)</span></div>
+      </div>
+      <div class="interactive-step" onclick="showRAGStep(3)">
+        <div class="step-num">4</div>
+        <div><b>Reciprocal Rank Fusion (RRF)</b><br><span style="font-size:12px; color:var(--mut);">k=60 rank normalization</span></div>
+      </div>
+      <div class="interactive-step" onclick="showRAGStep(4)">
+        <div class="step-num">5</div>
+        <div><b>Cross-Encoder Reranker</b><br><span style="font-size:12px; color:var(--mut);">BGE-Reranker-Large (Top-100 &rarr; Top-5)</span></div>
+      </div>
+    </div>
+    
+    <div id="ragStepDetail" style="background:#070B11; border:1px solid var(--line); border-radius:10px; padding:18px;">
+      <h4 style="color:var(--cyan); margin-top:0;">Step 1: Query Transformation & HyDE</h4>
+      <p style="font-size:14px;"><strong>Why:</strong> Raw user queries are noisy, brief, and contain colloquialisms. Standard vector search matches keywords poorly when phrased casually.</p>
+      <p style="font-size:14px;"><strong>Mechanism:</strong> A small 0.5B model generates a hypothetical candidate document answering the question. The hypothetical document embedding is then queried against the vector space.</p>
+      <pre><code># HyDE Query Transformation
+hypothetical_doc = slm.generate(f"Write a technical passage answering: {query}")
+query_vector = embedder.encode(hypothetical_doc)</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const ragSteps = [
+  {
+    title: "Step 1: Query Transformation & HyDE",
+    desc: "<strong>Why:</strong> Raw user queries are brief, vague, and lack domain phrasing.<br><strong>Mechanism:</strong> A fast SLM generates a hypothetical answer passage. Embedding this synthetic passage produces a vector that aligns far closer to the true document space than the raw query.",
+    code: `# HyDE Generation
+hypo_passage = fast_model.generate(f"Answer: {query}")
+query_vector = embedder.encode(hypo_passage)`
+  },
+  {
+    title: "Step 2: Redis Semantic Cache",
+    desc: "<strong>Why:</strong> 25% of enterprise queries are duplicates or semantically identical. Running inference on every turn wastes money and spikes GPU latency.<br><strong>Mechanism:</strong> Query vector is compared against pre-cached queries in Redis Vector Store. If cosine similarity &ge; 0.96, the stored completion is returned directly in &lt;15ms at $0 cost.",
+    code: `# Check Redis Vector Distance
+hit = redis_client.ft("idx:cache").search(
+    Query(f"*=>[KNN 1 @vector $vec AS score]")
+    .sort_by("score")
+    .return_fields("response", "score")
+    .dialect(2),
+    {"vec": query_vector.tobytes()}
+)`
+  },
+  {
+    title: "Step 3: Two-Stage Hybrid Retrieval",
+    desc: "<strong>Why:</strong> Vector embeddings excel at conceptual meaning, but completely fail on SKU numbers, serial tags, and specific variable names. BM25 keyword search covers exact term matches.<br><strong>Mechanism:</strong> Query runs concurrently against dense HNSW index (Qdrant/Milvus) and BM25 sparse index (Elasticsearch/OpenSearch).",
+    code: `# Concurrent Hybrid Query
+dense_hits = qdrant.search(collection="docs", query_vector=query_vec, limit=50)
+sparse_hits = opensearch.search(body={"query": {"match": {"content": query}}}, size=50)`
+  },
+  {
+    title: "Step 4: Reciprocal Rank Fusion (RRF)",
+    desc: "<strong>Why:</strong> Dense cosine scores and sparse BM25 scores have different distributions and cannot be summed directly.<br><strong>Mechanism:</strong> RRF standardizes scores purely by rank position: <code>RRF_Score = sum(1 / (k + rank_i))</code> where standard industry constant k = 60.",
+    code: `# RRF Calculation
+for rank, hit in enumerate(dense_hits):
+    scores[hit.id] += 1.0 / (60 + rank)
+for rank, hit in enumerate(sparse_hits):
+    scores[hit.id] += 1.0 / (60 + rank)`
+  },
+  {
+    title: "Step 5: Cross-Encoder Reranker",
+    desc: "<strong>Why:</strong> Bi-encoders compress documents into fixed vectors, losing fine-grained cross-token interactions.<br><strong>Mechanism:</strong> Full cross-attention model (e.g. BGE-Reranker-Large or Cohere Rerank) scores all (Query, Chunk) pairs together, pruning Top-100 down to Top-5 highest signal chunks for generation.",
+    code: `# Joint Cross-Attention Scoring
+pairs = [[query, chunk.text] for chunk in top_100_chunks]
+rerank_scores = cross_encoder.predict(pairs)
+final_chunks = [top_100_chunks[i] for i in argsort(rerank_scores)[:5]]`
+  }
+];
+
+function showRAGStep(index) {
+  const steps = document.querySelectorAll('.interactive-step');
+  steps.forEach((s, i) => {
+    s.classList.toggle('active', i === index);
+  });
+  const data = ragSteps[index];
+  document.getElementById('ragStepDetail').innerHTML = `
+    <h4 style="color:var(--cyan); margin-top:0;">${data.title}</h4>
+    <p style="font-size:14px;">${data.desc}</p>
+    <pre><code>${data.code}</code></pre>
+  `;
+}
+</script>
+
+<!-- QA-02 DETAILED ACCORDION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-02 • System Design</span>
+      <div class="scenario-title">Whiteboard: End-to-End Production RAG System</div>
+      <div class="scenario-meta">Source: Naresh Edagotti (PracticAI) • Track: AI Engineer • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>Interview Scenario:</b> "Draw and defend an end-to-end production RAG system serving 10M enterprise documents. How do you handle ambiguous user queries, prevent stale knowledge retrieval, and keep latency under 800ms?"
+    </div>
+    <div class="ans-box">
+      <b>Key Architectural Breakdown to Deliver:</b>
+      <ul>
+        <li><strong>Query Transformation:</strong> Run HyDE and multi-query decomposition to resolve ambiguous slang.</li>
+        <li><strong>Redis Semantic Cache:</strong> Check pre-computed vector embeddings. If similarity &ge; 0.96, return answer immediately (&lt;15ms latency, $0 token cost).</li>
+        <li><strong>Hybrid Dual-Search:</strong> Run dense vector similarity (capturing semantic intent) alongside BM25 sparse keyword search (capturing exact product SKUs, error codes, and IDs).</li>
+        <li><strong>RRF (Reciprocal Rank Fusion, k=60):</strong> Merge both ranked lists via score <code>sum(1 / (60 + rank))</code>.</li>
+        <li><strong>Cross-Encoder Reranker:</strong> Joint attention across top-100 candidates pruned to top-5 high-signal chunks.</li>
+      </ul>
+    </div>
+    <div class="pitfall">
+      <b>Candidate Red Flag:</b> Relying solely on vector embeddings without keyword BM25 search. Vector embeddings frequently fail on specific SKUs, serial numbers, error codes, and function names.
+    </div>
+  </div>
+</div>
+
+<!-- QA-23: VECTOR CALCULATOR -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-23 • Memory Sizing</span>
+      <div class="scenario-title">50M Vectors: HNSW vs IVF-PQ & Preventing Linux OOM Kills</div>
+      <div class="scenario-meta">Source: MLOps Community Debrief • Track: MLOps / Infra • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>The Scenario:</b> "Your team is indexing 50,000,000 1,536-dimensional vectors in a vector database. The server crashes with Linux OOM-killer during index build. How do you calculate memory requirements and choose between HNSW and IVF-PQ?"
+    </div>
+    
+    <div style="background:#101622; border:1px solid var(--vio); border-radius:12px; padding:20px; margin:16px 0;">
+      <h4 style="margin-top:0; color:var(--vio);">Interactive Vector RAM Estimator</h4>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+        <div>
+          <label>Vectors to Index (Millions):</label>
+          <input type="number" id="vCount" value="50" min="1" max="500" oninput="calcVectors()" style="width:100%; margin:8px 0; background:#0B0F17; color:#fff; border:1px solid var(--line); padding:8px; border-radius:6px;">
+          
+          <label>Dimensions (e.g. OpenAI 1536):</label>
+          <input type="number" id="vDims" value="1536" step="128" oninput="calcVectors()" style="width:100%; margin:8px 0; background:#0B0F17; color:#fff; border:1px solid var(--line); padding:8px; border-radius:6px;">
+        </div>
+        <div style="background:#070B11; padding:15px; border-radius:8px; border:1px solid var(--line);">
+          <div style="color:var(--mut); font-size:12px;">Raw FP32 Data:</div>
+          <div id="rawSize" style="font-size:20px; font-weight:bold; color:var(--txt);">307.2 GB</div>
+          
+          <div style="color:var(--rose); font-size:12px; margin-top:8px;">HNSW Index Footprint (2x Graph Overhead):</div>
+          <div id="hnswSize" style="font-size:20px; font-weight:bold; color:var(--rose);">614.4 GB (OOM Panic!)</div>
+          
+          <div style="color:var(--teal); font-size:12px; margin-top:8px;">IVF-PQ Quantized Footprint:</div>
+          <div id="ivfSize" style="font-size:20px; font-weight:bold; color:var(--teal);">18.0 GB (Production Safe)</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="ans-box">
+      <b>Whiteboard Mathematical Proof:</b>
+      <ul>
+        <li><code>Raw Vectors = 50M * 1,536 dimensions * 4 bytes (FP32) = 307.2 GB</code></li>
+        <li><strong>HNSW Graph Overhead:</strong> Each vector stores M=32 to 64 bidirectional graph edges. The graph metadata adds an additional 1.0x to 1.5x footprint, pushing total memory to <strong>614.4 GB RAM</strong>.</li>
+        <li><strong>IVF-PQ Solution:</strong> Partitions vector space into 4,096 Voronoi clusters. Product quantization compresses 1,536 floats (6,144 bytes) to 64 bytes. Total memory drops from <strong>614 GB to 18 GB</strong>, fitting easily into memory with &gt;95% recall.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+function calcVectors() {
+  const countM = parseFloat(document.getElementById('vCount').value) || 0;
+  const dims = parseFloat(document.getElementById('vDims').value) || 0;
+  const rawBytes = countM * 1e6 * dims * 4;
+  const rawGB = (rawBytes / (1024**3)).toFixed(1);
+  const hnswGB = (rawGB * 2.0).toFixed(1);
+  const ivfGB = ((countM * 1e6 * 64 + countM * 1e6 * 8) / (1024**3) + 2).toFixed(1);
+  document.getElementById('rawSize').innerText = rawGB + " GB";
+  document.getElementById('hnswSize').innerText = hnswGB + " GB (OOM Panic!)";
+  document.getElementById('ivfSize').innerText = ivfGB + " GB (Production Safe)";
+}
+</script>
+
+<!-- QA-37 ACCORDION -->
+<div class="scenario-card">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-37 • Advanced Architecture</span>
+      <div class="scenario-title">GraphRAG vs Classic Vector RAG: Resolving Global Multi-Hop Queries</div>
+      <div class="scenario-meta">Source: AI Architect Loop • Track: Architect / Principal • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>The Question:</b> "Why does vector search fail when asked: 'What are the top 3 themes across 50,000 customer feedback tickets?' How does GraphRAG solve this?"
+    </div>
+    <div class="ans-box">
+      <b>The Core Asymmetry:</b> Vector distance captures <i>local semantic affinity</i> (finding paragraphs similar to a phrasing). It cannot aggregate or synthesize across documents that share no common phrasing.<br><br>
+      <b>GraphRAG Resolution:</b>
+      <ol>
+        <li><strong>Entity & Relation Ingestion:</strong> LLM parses documents into <code>(Subject, Relation, Object)</code> triples.</li>
+        <li><strong>Leiden Community Detection:</strong> Graph is partitioned into hierarchical modular communities (C0, C1, C2).</li>
+        <li><strong>Community Summaries:</strong> LLM pre-summarizes each cluster at ingest time.</li>
+        <li><strong>Query Time:</strong> Global questions map to high-level community report vectors using parallel map-reduce synthesis.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- QA-17 ACCORDION -->
+<div class="scenario-card">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-17 • Context Tradeoffs</span>
+      <div class="scenario-title">"If Models Have 1M+ Tokens, Why Not Pass All Docs?"</div>
+      <div class="scenario-meta">Source: Syamala Jayanthi • Track: AI Engineer • Difficulty: Medium</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <b>Three Critical Production Red Flags:</b>
+      <ol>
+        <li><strong>Latency (TTFT) Explosion:</strong> Processing 1M tokens in prefill takes 15 to 45 seconds before the first token is emitted, violating interactive SLAs.</li>
+        <li><strong>Exponential Financial Burn:</strong> At $3.00/1M input tokens, 1,000 queries/day costs <strong>$90,000/month</strong> compared to $300/month with hybrid RAG.</li>
+        <li><strong>Attention Dilution ("Lost in the Middle"):</strong> Self-attention weights dilute over irrelevant text, increasing hallucinations and missing fine-grained numerical constraints.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="index.html">← Prev: 01. Overview</a><a href="llm-serving.html">Next: 03. Serving & Kernels →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>

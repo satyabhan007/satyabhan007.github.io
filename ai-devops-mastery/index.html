@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Overview & 45 Scenario Matrix | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0B0F17;
+  --panel: #131B26;
+  --card: #182232;
+  --line: #223247;
+  --txt: #E6EDF5;
+  --mut: #8B9BB0;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.65;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 80px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(11, 15, 23, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 24px;
+}
+.nav-scroll {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+}
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 500;
+  text-decoration: none; color: var(--mut);
+  background: #111827; border: 1px solid var(--line);
+  padding: 6px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 30px; margin: 18px 0 24px;
+  background: linear-gradient(180deg, #162438 0%, #0F1724 100%);
+  position: relative; overflow: hidden;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 18px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; padding: 22px; margin: 16px 0;
+}
+.grid-2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 12px;
+  padding: 16px; margin: 14px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 12px;
+  padding: 16px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 12px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.play-box {
+  background: #101622; border: 1px solid var(--vio);
+  border-radius: 14px; padding: 20px; margin: 18px 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.svg-diagram {
+  width: 100%; height: auto; background: #070B11;
+  border: 1px solid var(--line); border-radius: 12px; margin: 12px 0;
+}
+input, select {
+  background: #0B0F17; border: 1px solid var(--line);
+  color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 14px;
+}
+.btn {
+  background: var(--amber); color: #0B0F17; font-weight: 700;
+  padding: 8px 16px; border-radius: 8px; border: 0; cursor: pointer;
+  transition: opacity .2s;
+}
+.btn:hover { opacity: 0.9; }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn active">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 01: Master Map</span>
+      <h1>Course Overview & 45 Scenario Matrix</h1>
+    </div>
+    
+<div class="card">
+  <h2>🎯 Curriculum Overview & Master Matrix</h2>
+  <p>This 11-module masterclass translates <strong>50 real-world technical debriefs, failure war-stories, and architectural whiteboard challenges</strong> collected from senior AI candidates and leads at OpenAI, Google, NVIDIA, AWS, and Netflix into an interactive learning syllabus.</p>
+</div>
+
+<div class="play-box">
+  <h3>🔍 Interactive Scenario Matrix Filter</h3>
+  <p>Filter all 45 interview scenarios by domain or role track:</p>
+  <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+    <select id="roleFilter" onchange="filterMatrix()">
+      <option value="ALL">All Roles</option>
+      <option value="AI Engineer">AI Engineer</option>
+      <option value="AI DevOps">AI DevOps / Platform</option>
+      <option value="MLOps">MLOps</option>
+      <option value="Architect">Architect / Lead</option>
+    </select>
+    <select id="diffFilter" onchange="filterMatrix()">
+      <option value="ALL">All Difficulties</option>
+      <option value="Hard">Hard / Whiteboard</option>
+      <option value="Medium-Hard">Medium-Hard</option>
+    </select>
+    <input type="text" id="keywordSearch" placeholder="Search scenario, tech, or failure..." onkeyup="filterMatrix()" style="flex:1; min-width:200px;">
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table id="matrixTable" style="width:100%; border-collapse:collapse; font-size:14px; text-align:left;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--line); color:var(--amber);">
+          <th style="padding:10px;">ID</th>
+          <th style="padding:10px;">Domain</th>
+          <th style="padding:10px;">Role Track</th>
+          <th style="padding:10px;">Core Scenario / Interview Question</th>
+          <th style="padding:10px;">Difficulty</th>
+          <th style="padding:10px;">Module Page</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-01</td><td>Production Failure</td><td>AI DevOps</td><td>The "Tell me about a 2 AM failure" in production AI</td><td>Hard</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-02</td><td>System Design</td><td>AI Engineer</td><td>Whiteboard: End-to-End Production RAG System</td><td>Hard</td><td><a href="rag-search.html">02. RAG & Search</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-03</td><td>Agentic Workflows</td><td>AI Engineer</td><td>LangGraph Checkpointer Crash & Duplicate Payment Bug</td><td>Hard</td><td><a href="agentic-ai.html">05. Agentic AI</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-04</td><td>GPU Architecture</td><td>AI DevOps</td><td>GPU Utilization vs Occupancy vs Memory Bandwidth</td><td>Hard</td><td><a href="gpu-memory-math.html">04. Memory Math</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-05</td><td>Inference Serving</td><td>AI DevOps</td><td>Continuous Batching & PagedAttention in vLLM</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-06</td><td>Memory Sizing</td><td>AI DevOps</td><td>Llama-3-70B VRAM & GQA KV-Cache Math (64 streams)</td><td>Hard</td><td><a href="gpu-memory-math.html">04. Memory Math</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-07</td><td>Autoscaling</td><td>AI DevOps</td><td>Why HPA CPU/GPU utilization fails for LLM serving</td><td>Medium-Hard</td><td><a href="k8s-gpu-infra.html">08. K8s & Autoscaling</a></td></tr>
+        <tr data-role="Architect" data-diff="Hard"><td style="padding:8px;">QA-08</td><td>Cloud Resiliency</td><td>Architect</td><td>"What happens when an entire cloud region fails?"</td><td>Hard</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-09</td><td>Troubleshooting</td><td>AI DevOps</td><td>Intermittent 502 Bad Gateways under AI Inference load</td><td>Medium-Hard</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-10</td><td>High-Traffic Incident</td><td>AI DevOps</td><td>"Every morning at 10 AM, users see 'Something went wrong'"</td><td>Medium-Hard</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium-Hard"><td style="padding:8px;">QA-11</td><td>Cost & Routing</td><td>AI Engineer</td><td>Intelligent Model Routing (SLMs -> LLMs)</td><td>Medium-Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-12</td><td>Memory Exhaustion</td><td>AI DevOps</td><td>Cluster at 92% HBM; KV cache at 60%; cannot buy GPUs</td><td>Hard</td><td><a href="gpu-memory-math.html">04. Memory Math</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-13</td><td>K8s Networking</td><td>AI DevOps</td><td>5,000 Services & kube-proxy at 100% CPU in AI cluster</td><td>Hard</td><td><a href="k8s-gpu-infra.html">08. K8s & Autoscaling</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-14</td><td>AWS / CI/CD</td><td>AI DevOps</td><td>GitHub Actions OIDC to AWS failing with AccessDenied</td><td>Medium-Hard</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-15</td><td>RAG Failure Triage</td><td>AI Engineer</td><td>Model returns bad answer: Dissecting 5 root causes</td><td>Hard</td><td><a href="rag-search.html">02. RAG & Search</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium-Hard"><td style="padding:8px;">QA-16</td><td>Agent Reliability</td><td>AI Engineer</td><td>Agent Infinite Tool Loops & Idempotent Retries</td><td>Medium-Hard</td><td><a href="agentic-ai.html">05. Agentic AI</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium"><td style="padding:8px;">QA-17</td><td>Context Tradeoffs</td><td>AI Engineer</td><td>"If models have 1M+ tokens, why not pass all docs?"</td><td>Medium</td><td><a href="rag-search.html">02. RAG & Search</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-18</td><td>Security & Escapes</td><td>AI DevOps</td><td>Indirect Prompt Injection & Code Sandboxing</td><td>Hard</td><td><a href="eval-security-drills.html">10. Evals & Drills</a></td></tr>
+        <tr data-role="MLOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-19</td><td>Evaluation CI/CD</td><td>MLOps</td><td>Automated Quality Gates (Ragas, Faithfulness, Judges)</td><td>Medium-Hard</td><td><a href="eval-security-drills.html">10. Evals & Drills</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-20</td><td>HPC & Interconnect</td><td>AI DevOps</td><td>InfiniBand vs RoCE & NCCL Topology for Multi-Node</td><td>Hard</td><td><a href="distributed-parallelism.html">07. Distributed Scale</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-21</td><td>Cold Starts</td><td>AI DevOps</td><td>Reducing 70B model cold start from 8m to <45s</td><td>Medium-Hard</td><td><a href="k8s-gpu-infra.html">08. K8s & Autoscaling</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium"><td style="padding:8px;">QA-22</td><td>IaC Drift</td><td>AI DevOps</td><td>Terraform plan wants to destroy un-touched state</td><td>Medium</td><td><a href="cloud-devops-failures.html">09. SRE & Incidents</a></td></tr>
+        <tr data-role="MLOps" data-diff="Hard"><td style="padding:8px;">QA-23</td><td>Vector DB Scaling</td><td>MLOps</td><td>50M Vectors: HNSW vs IVF-PQ & Preventing OOM Kills</td><td>Hard</td><td><a href="rag-search.html">02. RAG & Search</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium"><td style="padding:8px;">QA-24</td><td>Tokenomics</td><td>AI Engineer</td><td>Byte-Pair Encoding failure on numbers and code</td><td>Medium</td><td><a href="fine-tuning-lora.html">06. Fine-Tuning</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-25</td><td>Distributed Parallelism</td><td>AI DevOps</td><td>Tensor (TP) vs Pipeline (PP) vs Data Parallelism (DP)</td><td>Hard</td><td><a href="distributed-parallelism.html">07. Distributed Scale</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium-Hard"><td style="padding:8px;">QA-26</td><td>Agent Protocols</td><td>AI Engineer</td><td>Model Context Protocol (MCP) vs Traditional REST APIs</td><td>Medium-Hard</td><td><a href="agentic-ai.html">05. Agentic AI</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-27</td><td>Kernel Optimization</td><td>AI Engineer</td><td>FlashAttention Tiling & Online Softmax Algorithm</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-28</td><td>Fine-Tuning vs PEFT</td><td>AI Engineer</td><td>LoRA vs QLoRA Mathematical Formulation & S-LoRA</td><td>Hard</td><td><a href="fine-tuning-lora.html">06. Fine-Tuning</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium-Hard"><td style="padding:8px;">QA-29</td><td>Format Failure</td><td>AI Engineer</td><td>Prompting vs Fine-Tuning Decision Tree</td><td>Medium-Hard</td><td><a href="fine-tuning-lora.html">06. Fine-Tuning</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-30</td><td>Distributed Training</td><td>AI DevOps</td><td>DeepSpeed ZeRO-1/2/3 Memory Partitioning Math</td><td>Hard</td><td><a href="distributed-parallelism.html">07. Distributed Scale</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-31</td><td>Serving Asymmetry</td><td>AI Engineer</td><td>Speculative Decoding & The Core Transformer Asymmetry</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="Architect" data-diff="Hard"><td style="padding:8px;">QA-32</td><td>Scale Architecture</td><td>Architect</td><td>Prefill-Decode Disaggregation (PD Disaggregation)</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-33</td><td>Distributed Serving</td><td>AI DevOps</td><td>Ray Serve + vLLM High-Throughput Cluster Architecture</td><td>Medium-Hard</td><td><a href="distributed-parallelism.html">07. Distributed Scale</a></td></tr>
+        <tr data-role="MLOps" data-diff="Hard"><td style="padding:8px;">QA-34</td><td>Quantization Showdown</td><td>MLOps</td><td>AWQ vs GPTQ vs SmoothQuant vs GGUF Tradeoffs</td><td>Hard</td><td><a href="fine-tuning-lora.html">06. Fine-Tuning</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-35</td><td>Runtime Security</td><td>AI DevOps</td><td>eBPF Runtime Threat Auditing & Zero-Downtime CVE Patch</td><td>Hard</td><td><a href="eval-security-drills.html">10. Evals & Drills</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-36</td><td>Serving Architecture</td><td>AI DevOps</td><td>Triton Inference Server Multi-Model Pipelines & SLAs</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="Architect" data-diff="Hard"><td style="padding:8px;">QA-37</td><td>Advanced Search</td><td>Architect</td><td>GraphRAG vs Vector RAG: Multi-Hop Macro Queries</td><td>Hard</td><td><a href="rag-search.html">02. RAG & Search</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-38</td><td>Agent Security</td><td>AI DevOps</td><td>Indirect Prompt Injection & Dual-LLM Privilege Isolation</td><td>Hard</td><td><a href="eval-security-drills.html">10. Evals & Drills</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-39</td><td>Interconnect</td><td>AI DevOps</td><td>InfiniBand vs RoCE v2 & NCCL Step-Time Jitter Triage</td><td>Hard</td><td><a href="distributed-parallelism.html">07. Distributed Scale</a></td></tr>
+        <tr data-role="MLOps" data-diff="Hard"><td style="padding:8px;">QA-40</td><td>Distributed K8s</td><td>MLOps</td><td>Gang Scheduling with Volcano & Preventing Resource Deadlocks</td><td>Hard</td><td><a href="k8s-gpu-infra.html">08. K8s & Autoscaling</a></td></tr>
+        <tr data-role="MLOps" data-diff="Medium-Hard"><td style="padding:8px;">QA-41</td><td>Quality & CI/CD</td><td>MLOps</td><td>Automated LLM Eval Quality Gates (Ragas/Promptfoo)</td><td>Medium-Hard</td><td><a href="eval-security-drills.html">10. Evals & Drills</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Medium-Hard"><td style="padding:8px;">QA-42</td><td>Fine-Tuning Data</td><td>AI Engineer</td><td>Synthetic Data Distillation & Multi-Tier Execution Filter</td><td>Medium-Hard</td><td><a href="fine-tuning-lora.html">06. Fine-Tuning</a></td></tr>
+        <tr data-role="Architect" data-diff="Medium-Hard"><td style="padding:8px;">QA-43</td><td>Cost Arbitrage</td><td>Architect</td><td>Intelligent Model Routing & Semantic Caching Gateway</td><td>Medium-Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-44</td><td>Performance Profiling</td><td>AI DevOps</td><td>vLLM Chunked Prefill, PagedAttention & ITL Stutter Triage</td><td>Hard</td><td><a href="llm-serving.html">03. Serving & Kernels</a></td></tr>
+        <tr data-role="Architect" data-diff="Hard"><td style="padding:8px;">QA-45</td><td>Fault Tolerance</td><td>Architect</td><td>Zero-Downtime Migration of Long-Running Agent Workflows</td><td>Hard</td><td><a href="agentic-ai.html">05. Agentic AI</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-46</td><td>Frontier Modeling</td><td>AI Engineer</td><td>Test-Time Compute Scaling, o1/R1, PRM vs ORM Tree Search</td><td>Hard</td><td><a href="reasoning-kernels.html">11. Reasoning & Triton</a></td></tr>
+        <tr data-role="AI Engineer" data-diff="Hard"><td style="padding:8px;">QA-47</td><td>Post-Training Alignment</td><td>AI Engineer</td><td>DPO vs PPO vs GRPO: Eliminating the Critic Network</td><td>Hard</td><td><a href="reasoning-kernels.html">11. Reasoning & Triton</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-48</td><td>Kernel Optimization</td><td>AI DevOps</td><td>Writing Custom Fused Kernels in OpenAI Triton (SRAM Tiling)</td><td>Hard</td><td><a href="reasoning-kernels.html">11. Reasoning & Triton</a></td></tr>
+        <tr data-role="AI DevOps" data-diff="Hard"><td style="padding:8px;">QA-49</td><td>Quantization Formats</td><td>AI DevOps</td><td>FP8 (E4M3 vs E5M2) vs INT4 vs AWQ Tensor Core GEMM</td><td>Hard</td><td><a href="reasoning-kernels.html">11. Reasoning & Triton</a></td></tr>
+        <tr data-role="Architect" data-diff="Hard"><td style="padding:8px;">QA-50</td><td>Frontier Inference</td><td>Architect</td><td>Speculative Decoding & Multi-Token Prediction (MTP) Engine</td><td>Hard</td><td><a href="reasoning-kernels.html">11. Reasoning & Triton</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function filterMatrix() {
+  const role = document.getElementById('roleFilter').value;
+  const diff = document.getElementById('diffFilter').value;
+  const q = document.getElementById('keywordSearch').value.toLowerCase();
+  const rows = document.querySelectorAll('#matrixTable tbody tr');
+  
+  rows.forEach(r => {
+    const rRole = r.getAttribute('data-role');
+    const rDiff = r.getAttribute('data-diff');
+    const text = r.innerText.toLowerCase();
+    
+    const roleMatch = (role === 'ALL' || rRole.includes(role));
+    const diffMatch = (diff === 'ALL' || rDiff === diff);
+    const textMatch = text.includes(q);
+    
+    if (roleMatch && diffMatch && textMatch) {
+      r.style.display = '';
+    } else {
+      r.style.display = 'none';
+    }
+  });
+}
+</script>
+
+    <div class="pager"><span></span><a href="rag-search.html">Next: 02. RAG & Search →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    
+  </main>
+</body>
+</html>

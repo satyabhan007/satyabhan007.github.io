@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic AI, LangGraph & MCP Protocols | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn active">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 05: Autonomous Systems</span>
+      <h1>Agentic AI, LangGraph & MCP Protocols</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--vio);">
+  <h2>Autonomous Agents, LangGraph Checkpointers & MCP Protocols</h2>
+  <p>Comprehensive coverage of <strong>QA-03, QA-16, QA-26, and QA-45</strong>. Master state persistence in cyclic agent graphs, preventing duplicate payments, Model Context Protocol vs REST APIs, and zero-downtime agent migration.</p>
+</div>
+
+<!-- Interactive Checkpointer Crash Explainer -->
+<div class="explainer-box">
+  <h3 style="margin-top:0; color:var(--vio);">Interactive LangGraph Checkpointer Lifecycle Walkthrough</h3>
+  <p style="font-size:14px; color:var(--mut);">Step through how a node failure replays code and why external APIs must be guarded with idempotent tokens:</p>
+  
+  <div style="display:grid; grid-template-columns: 1fr 1.5fr; gap:16px;">
+    <div>
+      <div class="interactive-step active" onclick="showAgentStep(0)">
+        <div class="step-num">1</div>
+        <div><b>Node Boundary Checkpoint</b><br><span style="font-size:12px; color:var(--mut);">State saved in PostgreSQL / Redis</span></div>
+      </div>
+      <div class="interactive-step" onclick="showAgentStep(1)">
+        <div class="step-num">2</div>
+        <div><b>Mid-Node Network Timeout</b><br><span style="font-size:12px; color:var(--mut);">External call succeeds, ACK lost</span></div>
+      </div>
+      <div class="interactive-step" onclick="showAgentStep(2)">
+        <div class="step-num">3</div>
+        <div><b>Unhandled Process Crash</b><br><span style="font-size:12px; color:var(--mut);">Container dies, Kubernetes restarts</span></div>
+      </div>
+      <div class="interactive-step" onclick="showAgentStep(3)">
+        <div class="step-num">4</div>
+        <div><b>Replay from Checkpoint</b><br><span style="font-size:12px; color:var(--mut);">Node re-executes from Line 1</span></div>
+      </div>
+    </div>
+    
+    <div id="agentStepDetail" style="background:#070B11; border:1px solid var(--line); border-radius:10px; padding:18px;">
+      <h4 style="color:var(--cyan); margin-top:0;">Step 1: Checkpoint Saved at Node Boundary</h4>
+      <p style="font-size:14px;">LangGraph checkpointers (PostgresSaver / MemorySaver) serialize state <strong>only after a node returns cleanly</strong>.</p>
+      <pre><code># Initial State Saved
+state = {
+    "order_id": "ORD-9481",
+    "amount": 150.00,
+    "idempotency_token": "tx_a8f93e" # Pre-generated!
+}</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const agentSteps = [
+  {
+    title: "Step 1: Checkpoint Saved at Node Boundary",
+    desc: "LangGraph persists state snapshots only at node transitions. If state is not persisted with a pre-computed token, retries generate random UUIDs.",
+    code: `state = {
+    "order_id": "ORD-9481",
+    "amount": 150.00,
+    "idempotency_token": "tx_a8f93e" # Generated in parent node!
+}`
+  },
+  {
+    title: "Step 2: Mid-Node Network Timeout",
+    desc: "The node sends an HTTP POST to Stripe. Stripe charges the card successfully, but the network drops before the 200 OK reaches your agent pod.",
+    code: `# HTTP POST Sent
+# Stripe charges $150
+# Network drop: TimeoutException!
+stripe.Charge.create(amount=150, idempotency_key=state["idempotency_token"])`
+  },
+  {
+    title: "Step 3: Unhandled Process Crash",
+    desc: "The unhandled exception causes Python to exit. Kubernetes restarts the container on a fresh node.",
+    code: `# Exit code 1
+# Pod terminated, restarted by kubelet`
+  },
+  {
+    title: "Step 4: Replay with Idempotency Token",
+    desc: "When the checkpointer resumes, it re-executes line 1. Because the idempotency token is preserved in state, Stripe detects the duplicate key and returns the existing charge instead of billing twice!",
+    code: `# Stripe sees existing 'tx_a8f93e'
+# Returns existing 200 OK -> ZERO DUPLICATE BILLING!`
+  }
+];
+
+function showAgentStep(idx) {
+  document.querySelectorAll('.interactive-step').forEach((s, i) => s.classList.toggle('active', i === idx));
+  const data = agentSteps[idx];
+  document.getElementById('agentStepDetail').innerHTML = `
+    <h4 style="color:var(--cyan); margin-top:0;">${data.title}</h4>
+    <p style="font-size:14px;">${data.desc}</p>
+    <pre><code>${data.code}</code></pre>
+  `;
+}
+</script>
+
+<!-- QA-03 ACCORDION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-03 • LangGraph Core</span>
+      <div class="scenario-title">LangGraph Checkpointer Crash & Duplicate Payment Bug</div>
+      <div class="scenario-meta">Source: Naved Khan (LangGraph Core) • Track: AI Engineer • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>The Bug:</b> An autonomous agent calls Stripe to charge $150. Mid-node network drops. Checkpointer rolls back to beginning of node. Customer is charged twice.
+    </div>
+    <div class="ans-box">
+      <b>The Solution:</b>
+      <ul>
+        <li>Never generate idempotency tokens inside the mutation node!</li>
+        <li>State nodes must be pure. Generate the token in an upstream planning node and store it in <code>state["idempotency_key"]</code>.</li>
+        <li>On checkpointer replay, the external API recognizes the identical token and returns the original transaction.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QA-26 ACCORDION -->
+<div class="scenario-card">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-26 • Protocols</span>
+      <div class="scenario-title">Model Context Protocol (MCP) vs Traditional REST APIs</div>
+      <div class="scenario-meta">Source: Pavan Belagatti & Rohit Ghumare • Track: AI Engineer • Difficulty: Medium-Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <ul>
+        <li><strong>Dynamic Discovery:</strong> MCP clients query tool capabilities over JSON-RPC on demand, eliminating 15,000 prompt tokens of static Swagger schemas.</li>
+        <li><strong>Transport Security:</strong> Runs over isolated <code>stdio</code> subprocesses or SSE with granular OAuth2 scopes.</li>
+        <li><strong>Unified Ecosystem:</strong> Connects IDEs, AI coding assistants, and cloud platforms through a single standardized interface.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="gpu-memory-math.html">← Prev: 04. Memory Math</a><a href="fine-tuning-lora.html">Next: 06. Fine-Tuning →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>

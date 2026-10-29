@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud SRE, Networking & Production Failures | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn active">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 09: Production War Stories</span>
+      <h1>Cloud SRE, Networking & Production Failures</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--amber);">
+  <h2>Cloud SRE, Networking & Production Incident War Stories</h2>
+  <p>Comprehensive coverage of <strong>QA-01, QA-08, QA-09, QA-10, QA-14, and QA-22</strong>. Master the STAR interview framework for 2 AM production failures, TCP keepalive 502 race conditions, and thundering herd mitigations.</p>
+</div>
+
+<!-- QA-01 STAR WAR STORY -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-01 • The STAR Framework</span>
+      <div class="scenario-title">The "Tell Me About a 2 AM Production Failure" Incident</div>
+      <div class="scenario-meta">Source: Bharath Reddy (40 LPA Loop) • Track: AI DevOps / SRE • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <b>STAR War Story Delivery:</b>
+      <ul>
+        <li><strong>Situation:</strong> At 2:15 AM, p99 latency on our customer service AI agent spiked from 800ms to 48 seconds, triggering PagerDuty alerts across the platform team.</li>
+        <li><strong>Task:</strong> Identify the root cause, restore service without dropping customer chats, and eliminate the vulnerability permanently.</li>
+        <li><strong>Action:</strong> Low-level tracing revealed a downstream CRM API was returning HTTP 429 HTML rate-limit error pages. The agent interpreted the HTML body as new instructions and entered an unbounded reflection loop. We applied emergency circuit breakers, capped <code>max_iterations = 4</code>, and enforced exponential backoff with full jitter.</li>
+        <li><strong>Result:</strong> P99 latency recovered to 650ms. Incident post-mortem introduced automated CI/CD chaos tests, saving estimated $45k/month in runaway token loops.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QA-09 TCP RACE CONDITION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-09 • Network Race Condition</span>
+      <div class="scenario-title">Intermittent 502 Bad Gateway Under AI Inference Load</div>
+      <div class="scenario-meta">Source: Rishabh Tripathi • Track: DevOps / Platform • Difficulty: Medium-Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>The Mystery:</b> 1.5% of requests fail with 502 Bad Gateway, but backend CPU is low and pods are not restarting.
+    </div>
+    <div class="ans-box">
+      <b>The TCP Keepalive Race Condition:</b>
+      <p>When the upstream reverse proxy (Nginx / ALB) has a keepalive timeout longer than or equal to the backend server (FastAPI/Uvicorn), the backend can send a <code>TCP FIN</code> at the exact microsecond the proxy forwards a new request, resulting in an immediate <code>TCP RST</code>.</p>
+      <div style="background:#070B11; border:1px solid var(--teal); border-radius:8px; padding:12px; margin:10px 0;">
+        <b>The Golden Rule:</b> Backend keepalive timeout must ALWAYS be strictly greater than proxy timeout:
+        <pre><code># Nginx Ingress: keepalive_timeout 65s;
+# Uvicorn:       uvicorn.run(..., timeout_keep_alive=75) # 75s > 65s!</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="k8s-gpu-infra.html">← Prev: 08. K8s & Autoscaling</a><a href="eval-security-drills.html">Next: 10. Evals & Drills →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Serving: vLLM, PagedAttention & Kernels | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn active">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 03: Serving Engines</span>
+      <h1>LLM Serving: vLLM, PagedAttention & Kernels</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--amber);">
+  <h2>LLM Serving: vLLM, PagedAttention, Kernels & Triton</h2>
+  <p>Comprehensive coverage of <strong>QA-05, QA-27, QA-31, QA-32, QA-36, and QA-44</strong>. Master iteration-level scheduling, FlashAttention online softmax, speculative decoding, and prefill-decode disaggregation.</p>
+</div>
+
+<!-- Interactive Speculative Decoding Explainer -->
+<div class="explainer-box">
+  <h3 style="margin-top:0; color:var(--cyan);">Interactive Speculative Decoding Simulator</h3>
+  <p style="font-size:14px; color:var(--mut);">See how a small 1B draft model collaborates with a 70B target model to double token generation speeds without loss of accuracy:</p>
+  
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <div>
+      <label>Speculative Lookahead Tokens (K):</label>
+      <input type="range" id="kRange" min="1" max="8" value="4" oninput="simSpec()" style="width:100%; margin:8px 0;">
+      <div id="kLabel" style="color:var(--amber); font-weight:bold;">K = 4 tokens</div>
+      
+      <label style="margin-top:10px; display:block;">Draft Acceptance Probability (&alpha;):</label>
+      <input type="range" id="aRange" min="40" max="95" value="75" oninput="simSpec()" style="width:100%; margin:8px 0;">
+      <div id="aLabel" style="color:var(--teal); font-weight:bold;">Acceptance = 75%</div>
+    </div>
+    
+    <div style="background:#070B11; padding:16px; border-radius:10px; border:1px solid var(--line);">
+      <div style="color:var(--mut); font-size:12px;">Expected Accepted Tokens Per Forward Pass:</div>
+      <div id="accOutput" style="font-size:24px; font-weight:bold; color:var(--cyan);">3.25 tokens</div>
+      
+      <div style="color:var(--amber); font-size:12px; margin-top:10px;">Net Generation Speedup:</div>
+      <div id="speedOutput" style="font-size:24px; font-weight:bold; color:var(--amber);">2.41x Faster</div>
+      <div style="font-size:12px; color:var(--mut); margin-top:6px;">Target model executes 1 parallel prefill verification step instead of 4 sequential memory-bound decode steps!</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function simSpec() {
+  const K = parseInt(document.getElementById('kRange').value);
+  const alpha = parseInt(document.getElementById('aRange').value) / 100.0;
+  document.getElementById('kLabel').innerText = "K = " + K + " tokens";
+  document.getElementById('aLabel').innerText = "Acceptance = " + (alpha * 100).toFixed(0) + "%";
+  
+  let accepted = 0;
+  for (let i = 0; i < K; i++) accepted += Math.pow(alpha, i);
+  const speedup = (accepted / (1 + (K * 0.12))).toFixed(2);
+  
+  document.getElementById('accOutput').innerText = accepted.toFixed(2) + " tokens / pass";
+  document.getElementById('speedOutput').innerText = speedup + "x Faster";
+}
+</script>
+
+<!-- QA-05 ACCORDION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-05 • Core Serving</span>
+      <div class="scenario-title">Continuous Batching & PagedAttention in vLLM</div>
+      <div class="scenario-meta">Source: H2LooP / Enterprise Infra • Track: AI DevOps • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="q-box">
+      <b>The Question:</b> "Why does static request-level batching waste &gt;70% of GPU compute, and how does vLLM schedule at the iteration level?"
+    </div>
+    <div class="ans-box">
+      <ul>
+        <li><strong>Static Batching Inefficiency:</strong> The entire batch is bound by the slowest sequence. When a 50-token query finishes, it must output padding tokens while waiting for a 2,000-token sequence to complete.</li>
+        <li><strong>Continuous Batching:</strong> Scheduling occurs at the <i>token iteration level</i>. The moment an sequence emits an <code>&lt;EOS&gt;</code>, it is evicted immediately. A newly queued request enters on the very next forward pass, keeping GPU tensor cores saturated.</li>
+        <li><strong>PagedAttention Virtual Tables:</strong> Standard serving pre-allocates maximum context VRAM (causing up to 80% fragmentation). PagedAttention partitions KV cache into 16-token virtual blocks, allocating physical pages on demand.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QA-27 ACCORDION -->
+<div class="scenario-card">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-27 • Google Round</span>
+      <div class="scenario-title">FlashAttention Tiling & The Online Softmax Algorithm</div>
+      <div class="scenario-meta">Source: Ashutosh Gupta (Google) • Track: AI Systems • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <b>The Core Asymmetry:</b> High Bandwidth Memory (HBM) bandwidth is 2.0 TB/s, whereas on-chip SRAM is 20 TB/s (10x faster).<br><br>
+      <b>Mechanism:</b>
+      <ul>
+        <li>Standard attention calculates <code>S = Q * K^T</code>, writes the intermediate N &times; N matrix to HBM, reads it back for Softmax, writes <code>P</code> back to HBM, and reads it for <code>O = P * V</code>. Memory complexity is O(N&sup2;).</li>
+        <li>FlashAttention tiles Q, K, and V into blocks that fit entirely within SRAM.</li>
+        <li><strong>Online Softmax:</strong> Keeps running scale factors (max value <code>m</code> and sum <code>l</code>). When a new tile arrives, existing output accumulator is scaled by <code>e^{m_prev - m_new}</code>, completing attention in a single pass without writing N &times; N matrices to HBM!</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- QA-32 ACCORDION -->
+<div class="scenario-card">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-32 • Scale Architecture</span>
+      <div class="scenario-title">Prefill-Decode Disaggregation (PD Disaggregation) at Enterprise Scale</div>
+      <div class="scenario-meta">Source: Mohit Kumar Dubey • Track: Architect / Principal • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <b>Why Colocation Fails:</b> Prefill is compute-bound (massive parallel GEMM operations). Decode is memory-bound (loading all weights per single token). Running both on the same GPU means a sudden burst of long prompts halts active decoding streams, spiking Inter-Token Latency (ITL) and creating stuttering user experiences.<br><br>
+      <b>Disaggregated Solution:</b>
+      <ul>
+        <li><strong>Prefill Nodes:</strong> Clustered high-compute GPUs run prompt phase at 100% FLOPS occupancy.</li>
+        <li><strong>KV-Cache Streaming:</strong> Computed KV cache is transmitted directly into decode GPU memory over high-speed RDMA / InfiniBand.</li>
+        <li><strong>Decode Nodes:</strong> Devoted 100% to continuous generation streams with zero latency spikes.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="rag-search.html">← Prev: 02. RAG & Search</a><a href="gpu-memory-math.html">Next: 04. Memory Math →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>

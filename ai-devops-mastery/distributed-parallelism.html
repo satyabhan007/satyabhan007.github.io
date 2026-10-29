@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distributed AI: ZeRO, 3D Parallelism & Ray | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn active">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 07: Scale & Multi-Node</span>
+      <h1>Distributed AI: ZeRO, 3D Parallelism & Ray</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--cyan);">
+  <h2>Distributed AI: ZeRO, 3D Parallelism & Ray Clusters</h2>
+  <p>Comprehensive coverage of <strong>QA-20, QA-25, QA-30, QA-33, and QA-39</strong>. Master DeepSpeed ZeRO-1/2/3 static memory proofs, 3D Parallelism across NVLink and InfiniBand, and InfiniBand vs RoCE step-time jitter triage.</p>
+</div>
+
+<!-- Interactive ZeRO Memory Calculator -->
+<div class="explainer-box">
+  <h3 style="margin-top:0; color:var(--cyan);">Interactive DeepSpeed ZeRO Memory Proof Calculator</h3>
+  <p style="font-size:14px; color:var(--mut);">Enter your model parameters and GPU cluster size to prove the exact per-GPU static memory savings across ZeRO stages:</p>
+  
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+    <div>
+      <label>Model Parameter Count (Billions):</label>
+      <input type="number" id="zeroParams" value="70" min="1" max="500" oninput="calcZeRO()" style="width:100%; margin:8px 0; background:#0B0F17; color:#fff; border:1px solid var(--line); padding:8px; border-radius:6px;">
+      
+      <label>Data-Parallel GPUs (N):</label>
+      <input type="number" id="zeroGPUs" value="16" min="1" max="1024" oninput="calcZeRO()" style="width:100%; margin:8px 0; background:#0B0F17; color:#fff; border:1px solid var(--line); padding:8px; border-radius:6px;">
+    </div>
+    
+    <div style="background:#070B11; padding:16px; border-radius:10px; border:1px solid var(--line);">
+      <div style="color:var(--rose); font-size:12px;">Standard Mixed Precision (16P Static):</div>
+      <div id="stdMem" style="font-size:18px; font-weight:bold; color:var(--rose);">1,120 GB (Cannot fit on 1 GPU!)</div>
+      
+      <div style="color:var(--amber); font-size:12px; margin-top:8px;">ZeRO-1 (Optimizer Partitioning):</div>
+      <div id="z1Mem" style="font-size:18px; font-weight:bold; color:var(--amber);">332.5 GB / GPU</div>
+      
+      <div style="color:var(--blue); font-size:12px; margin-top:8px;">ZeRO-2 (Optimizer + Gradient):</div>
+      <div id="z2Mem" style="font-size:18px; font-weight:bold; color:var(--blue);">201.2 GB / GPU</div>
+      
+      <div style="color:var(--teal); font-size:12px; margin-top:8px;">ZeRO-3 (Full Parameters + Opt + Grad):</div>
+      <div id="z3Mem" style="font-size:22px; font-weight:bold; color:var(--teal);">70.0 GB / GPU (Fits in 80GB VRAM!)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function calcZeRO() {
+  const P = parseFloat(document.getElementById('zeroParams').value) || 0;
+  const N = parseFloat(document.getElementById('zeroGPUs').value) || 1;
+  
+  const std = 16 * P;
+  const z1 = (4 * P) + (12 * P / N);
+  const z2 = (2 * P) + (14 * P / N);
+  const z3 = (16 * P) / N;
+  
+  document.getElementById('stdMem').innerText = std.toFixed(1) + " GB (Static across nodes)";
+  document.getElementById('z1Mem').innerText = z1.toFixed(1) + " GB / GPU";
+  document.getElementById('z2Mem').innerText = z2.toFixed(1) + " GB / GPU";
+  document.getElementById('z3Mem').innerText = z3.toFixed(1) + " GB / GPU (" + (z3 <= 80 ? "Fits in 80GB VRAM!" : "Need more GPUs") + ")";
+}
+</script>
+
+<!-- QA-25 ACCORDION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-25 • Multi-Node Topology</span>
+      <div class="scenario-title">Tensor (TP) vs Pipeline (PP) vs Data Parallelism (DP) Across 256 GPUs</div>
+      <div class="scenario-meta">Source: Intel / Enterprise Infra Panel • Track: AI Platform • Difficulty: Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="ans-box">
+      <b>The Hardware Boundary Rule:</b>
+      <ul>
+        <li><strong>Tensor Parallelism (TP=8):</strong> Must stay <strong>intra-node over NVLink (900 GB/s)</strong>. TP splits matrix operations layer-by-layer, requiring massive high-frequency All-Reduce synchronizations. Running TP over Ethernet or standard InfiniBand will crater performance.</li>
+        <li><strong>Pipeline Parallelism (PP=8):</strong> Runs <strong>inter-node over InfiniBand</strong>. Layers are partitioned sequentially across nodes; only activation tensors flow between pipeline stages.</li>
+        <li><strong>Data Parallelism (DP=4):</strong> Replicates 3D grids across the cluster with ZeRO-3 / FSDP gradient reductions.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="fine-tuning-lora.html">← Prev: 06. Fine-Tuning</a><a href="k8s-gpu-infra.html">Next: 08. K8s & Autoscaling →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>

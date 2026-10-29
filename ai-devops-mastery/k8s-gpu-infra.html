@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kubernetes GPU Infrastructure & Autoscaling | AI & DevOps Mastery Course</title>
+  <style>
+:root {
+  --bg: #0A0E17;
+  --panel: #111827;
+  --card: #162032;
+  --card-hover: #1C293D;
+  --line: #223249;
+  --txt: #E2E8F0;
+  --mut: #94A3B8;
+  --amber: #F59E0B;
+  --teal: #10B981;
+  --blue: #3B82F6;
+  --vio: #8B5CF6;
+  --rose: #F43F5E;
+  --cyan: #06B6D4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+}
+.wrap { max-width: 1360px; margin: auto; padding: 20px 24px 90px; }
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10, 14, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+}
+.nav-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.nav-btn {
+  white-space: nowrap; font-size: 13px; font-weight: 600;
+  text-decoration: none; color: var(--mut);
+  background: #0F172A; border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 999px; transition: all .2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  color: #fff; background: var(--card); border-color: var(--amber);
+}
+.hero {
+  border: 1px solid var(--line); border-radius: 18px;
+  padding: 32px; margin: 18px 0 26px;
+  background: linear-gradient(180deg, #16243A 0%, #0D1422 100%);
+  position: relative;
+}
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  background: rgba(16, 185, 129, 0.15); color: var(--teal);
+  border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 12px;
+}
+h1 { font-size: 32px; margin: 0 0 10px; line-height: 1.25; color: #fff; }
+h2 { font-size: 24px; margin: 34px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; color: #fff; }
+h3 { font-size: 19px; margin: 18px 0 8px; color: var(--amber); }
+p, li { color: #CBD5E1; font-size: 15px; }
+
+/* Interactive Scenario Card */
+.scenario-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 14px; margin: 18px 0; overflow: hidden;
+  transition: border-color .2s;
+}
+.scenario-card:hover { border-color: #3B82F6; }
+.scenario-header {
+  padding: 18px 22px; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center;
+  background: #131D2D; user-select: none;
+}
+.scenario-title { font-size: 16px; font-weight: 700; color: #fff; }
+.scenario-meta { font-size: 13px; color: var(--mut); margin-top: 4px; }
+.toggle-icon { font-size: 18px; color: var(--amber); transition: transform .2s; }
+.scenario-body {
+  padding: 22px; display: none; border-top: 1px solid var(--line);
+}
+.scenario-card.open .scenario-body { display: block; }
+.scenario-card.open .toggle-icon { transform: rotate(180deg); }
+
+.q-box {
+  background: #18150A; border: 1px solid var(--amber);
+  border-left: 5px solid var(--amber); border-radius: 10px;
+  padding: 16px; margin: 12px 0;
+}
+.ans-box {
+  background: #0A1713; border: 1px solid var(--teal);
+  border-left: 5px solid var(--teal); border-radius: 10px;
+  padding: 18px; margin: 14px 0;
+}
+.pitfall {
+  background: #1C0F12; border: 1px solid var(--rose);
+  border-left: 5px solid var(--rose); border-radius: 10px;
+  padding: 14px 16px; margin: 14px 0; font-size: 14px;
+}
+.explainer-box {
+  background: #0E1626; border: 1px solid var(--blue);
+  border-radius: 12px; padding: 18px; margin: 16px 0;
+}
+.interactive-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; margin: 6px 0;
+  background: #131E30; cursor: pointer; transition: background .2s;
+}
+.interactive-step:hover, .interactive-step.active {
+  background: #1E2D48; border-left: 3px solid var(--cyan);
+}
+.step-num {
+  background: var(--blue); color: #fff; font-weight: bold;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;
+}
+pre {
+  background: #070B11; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px; line-height: 1.6; color: #E2E8F0;
+}
+code { font-family: inherit; color: var(--cyan); }
+.pager {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.pager a {
+  text-decoration: none; color: var(--txt); background: var(--panel);
+  border: 1px solid var(--line); padding: 10px 18px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+}
+.pager a:hover { border-color: var(--amber); color: #fff; }
+</style>
+</head>
+<body>
+  <header class="top-bar"><nav class="nav-scroll"><a href="index.html" class="nav-btn">01. Overview</a><a href="rag-search.html" class="nav-btn">02. RAG & Search</a><a href="llm-serving.html" class="nav-btn">03. Serving & Kernels</a><a href="gpu-memory-math.html" class="nav-btn">04. Memory Math</a><a href="agentic-ai.html" class="nav-btn">05. Agentic AI</a><a href="fine-tuning-lora.html" class="nav-btn">06. Fine-Tuning</a><a href="distributed-parallelism.html" class="nav-btn">07. Distributed Scale</a><a href="k8s-gpu-infra.html" class="nav-btn active">08. K8s & Autoscaling</a><a href="cloud-devops-failures.html" class="nav-btn">09. SRE & Incidents</a><a href="eval-security-drills.html" class="nav-btn">10. Evals & Drills</a><a href="reasoning-kernels.html" class="nav-btn">11. Reasoning & Triton</a></nav></header>
+  <main class="wrap">
+    <div class="hero">
+      <span class="badge">Module 08: Orchestration</span>
+      <h1>Kubernetes GPU Infrastructure & Autoscaling</h1>
+      <p style="margin:0; font-size:15px; color:var(--mut);">Interactive technical curriculum synthesized from FAANG and Tier-1 AI startup interview rounds.</p>
+    </div>
+    
+<div class="card" style="border-left: 4px solid var(--blue);">
+  <h2>Kubernetes GPU Infrastructure, Volcano & Fast Cold Starts</h2>
+  <p>Comprehensive coverage of <strong>QA-07, QA-13, QA-21, and QA-40</strong>. Master queue-depth autoscaling with KEDA, Volcano gang scheduling, JuiceFS distributed NVMe caching, and eBPF kube-proxy replacements.</p>
+</div>
+
+<!-- Interactive Cold Start Optimization Breakdown -->
+<div class="explainer-box">
+  <h3 style="margin-top:0; color:var(--blue);">Interactive 70B Cold Start Optimization Pipeline</h3>
+  <p style="font-size:14px; color:var(--mut);">Click each stage to see how a naive 8-minute pod launch is collapsed to under 45 seconds:</p>
+  
+  <div style="display:grid; grid-template-columns: 1fr 1.5fr; gap:16px;">
+    <div>
+      <div class="interactive-step active" onclick="showColdStep(0)">
+        <div class="step-num">1</div>
+        <div><b>Naive Baseline (8m 10s)</b><br><span style="font-size:12px; color:var(--mut);">140GB image pull from ECR/DockerHub</span></div>
+      </div>
+      <div class="interactive-step" onclick="showColdStep(1)">
+        <div class="step-num">2</div>
+        <div><b>Image Decoupling (2m 15s)</b><br><span style="font-size:12px; color:var(--mut);">Base runtime image (&lt;1.5GB)</span></div>
+      </div>
+      <div class="interactive-step" onclick="showColdStep(2)">
+        <div class="step-num">3</div>
+        <div><b>Distributed POSIX Cache (55s)</b><br><span style="font-size:12px; color:var(--mut);">JuiceFS / Fluid on local NVMe</span></div>
+      </div>
+      <div class="interactive-step" onclick="showColdStep(3)">
+        <div class="step-num">4</div>
+        <div><b>GPUDirect Storage (14s)</b><br><span style="font-size:12px; color:var(--mut);">Direct NVMe &rarr; GPU HBM bypass</span></div>
+      </div>
+    </div>
+    
+    <div id="coldStepDetail" style="background:#070B11; border:1px solid var(--line); border-radius:10px; padding:18px;">
+      <h4 style="color:var(--rose); margin-top:0;">Stage 1: Naive Monolithic Image (8 min 10 sec)</h4>
+      <p style="font-size:14px;"><strong>The Bottleneck:</strong> Teams bake 140GB of safetensors weights directly into the Docker image. Pulling a 140GB image across network interfaces and unpacking container layers takes 7 to 10 minutes on new nodes, completely missing burst traffic.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const coldSteps = [
+  {
+    title: "Stage 1: Naive Monolithic Image (8 min 10 sec)",
+    desc: "<strong>The Bottleneck:</strong> Storing 140GB weights in Docker images causes ECR registry rate-limiting, slow network pulls, and slow container unpack times.",
+    code: `# AVOID: Monolithic 140GB Dockerfile!
+FROM nvidia/cuda:12.4
+COPY ./llama-3-70b-weights /app/weights # DANGER!`
+  },
+  {
+    title: "Stage 2: Image Decoupling (2 min 15 sec)",
+    desc: "<strong>Optimization:</strong> Strip weights out of the container image entirely. Build a minimal 1.2GB image containing only the vLLM python runtime and CUDA binaries. Image pulls in 15 seconds.",
+    code: `# Clean Lightweight Dockerfile
+FROM vllm/vllm-openai:v0.6.2 # 1.2GB only!`
+  },
+  {
+    title: "Stage 3: Distributed NVMe POSIX Cache (55 sec)",
+    desc: "<strong>Optimization:</strong> Deploy <strong>Fluid with JuiceFS</strong>. Weights are backed by S3, but local Kubernetes worker node NVMe drives pre-cache shards. Pods mount a local POSIX path.",
+    code: `# Kubernetes Persistent Volume Mount
+volumeMounts:
+- name: model-weights
+  mountPath: /models
+  readOnly: true`
+  },
+  {
+    title: "Stage 4: GPUDirect Storage (GDS) Direct DMA (14 sec)",
+    desc: "<strong>Optimization:</strong> Load weights directly from local NVMe into GPU HBM using <strong>NVIDIA cuFile / GPUDirect Storage</strong>. Bypasses host CPU RAM and OS page cache entirely. Throughput increases to 12 GB/s!",
+    code: `# Fast Direct DMA Tensor Loading
+vllm serve /models/llama-3-70b --load-format safetensors`
+  }
+];
+
+function showColdStep(idx) {
+  document.querySelectorAll('.interactive-step').forEach((s, i) => s.classList.toggle('active', i === idx));
+  const data = coldSteps[idx];
+  document.getElementById('coldStepDetail').innerHTML = `
+    <h4 style="color:var(--cyan); margin-top:0;">${data.title}</h4>
+    <p style="font-size:14px;">${data.desc}</p>
+    <pre><code>${data.code}</code></pre>
+  `;
+}
+</script>
+
+<!-- QA-07 ACCORDION -->
+<div class="scenario-card open">
+  <div class="scenario-header" onclick="toggleCard(this)">
+    <div>
+      <span class="badge">QA-07 • KEDA Autoscaling</span>
+      <div class="scenario-title">Why HPA CPU/GPU Utilization Fails for LLMs</div>
+      <div class="scenario-meta">Source: Rishabh Tripathi • Track: AI DevOps / SRE • Difficulty: Medium-Hard</div>
+    </div>
+    <div class="toggle-icon">▼</div>
+  </div>
+  <div class="scenario-body">
+    <div class="pitfall">
+      <b>The Trap:</b> Setting HPA to scale on 80% GPU memory causes instant scale-out to max replicas because vLLM pre-allocates 90% of VRAM for PagedAttention at boot time.
+    </div>
+    <div class="ans-box">
+      <b>The Solution:</b> Use KEDA targeting <code>vllm:num_requests_waiting</code>:
+      <pre><code>apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: vllm-queue-autoscaler
+spec:
+  scaleTargetRef:
+    name: vllm-llama3-deployment
+  minReplicaCount: 2
+  maxReplicaCount: 16
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus.monitoring:9090
+      metricName: vllm_num_requests_waiting
+      query: sum(vllm:num_requests_waiting{model="llama3-70b"})
+      threshold: '4'</code></pre>
+    </div>
+  </div>
+</div>
+
+    <div class="pager"><a href="distributed-parallelism.html">← Prev: 07. Distributed Scale</a><a href="cloud-devops-failures.html">Next: 09. SRE & Incidents →</a></div>
+    <footer style="margin-top:30px; text-align:center; color:var(--mut); font-size:13px;">
+      Satyabhan AI Engineering & DevOps Master Course • Synthesized from LinkedIn Production Debriefs & FAANG Engineering Loops
+    </footer>
+    <script>
+      function toggleCard(header) {
+        header.parentElement.classList.toggle('open');
+      }
+    </script>
+    
+  </main>
+</body>
+</html>
