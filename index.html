@@ -797,7 +797,10 @@
     <div style="margin-top: 32px; border-top: 1px solid var(--panel-line); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
       <div>
         <span style="color: var(--muted); font-size: 0.8rem; font-family: 'IBM Plex Mono', monospace; display: block; margin-bottom: 8px;">VISITOR METRICS</span>
-        <img src="https://komarev.com/ghpvc/?username=satyabhan007-main&label=VISITS&color=F0653D&style=flat-square" alt="Visitor Count">
+        <div style="display:inline-flex; align-items:center; height:20px; font-family:'DejaVu Sans',Verdana,Geneva,sans-serif; font-size:11px; border-radius:3px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.3);">
+          <span style="background:#555; color:#fff; padding:0 8px; line-height:20px; display:inline-block; font-weight:500;">VISITS</span>
+          <span id="visitor-count" style="background:#F0653D; color:#fff; padding:0 8px; line-height:20px; display:inline-block; font-weight:700;">3,196</span>
+        </div>
       </div>
       <div>
         <span style="color: var(--muted); font-size: 0.8rem; font-family: 'IBM Plex Mono', monospace; display: block; margin-bottom: 8px; text-align: right;">YOUR IP ADDRESS</span>
@@ -806,6 +809,29 @@
     </div>
     
     <script>
+      // Even Daily Visitor Count Engine
+      (function() {
+        const baseDate = new Date('2026-10-01T00:00:00Z');
+        const now = new Date();
+        const daysPassed = Math.max(0, Math.floor((now - baseDate) / (1000 * 60 * 60 * 24)));
+        
+        // Base visits (even) + strictly even daily increment (+18 every 24h)
+        const baseVisits = 2680;
+        const dailyEvenIncrement = 18;
+        
+        // Intra-day even progress based on hour
+        const hour = now.getHours();
+        const intraDayProgress = Math.floor((hour / 24) * dailyEvenIncrement / 2) * 2;
+        
+        let total = baseVisits + (daysPassed * dailyEvenIncrement) + intraDayProgress;
+        if (total % 2 !== 0) total += 1; // Strict guarantee of even number
+        
+        const countEl = document.getElementById('visitor-count');
+        if (countEl) {
+          countEl.textContent = total.toLocaleString();
+        }
+      })();
+
       fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {
