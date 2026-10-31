@@ -462,6 +462,26 @@
     border-radius:6px;
     padding:26px 28px;
   }
+  .fde-banner {
+    display:flex;
+    gap:16px;
+    align-items:center;
+    text-decoration:none;
+    color:var(--text);
+    margin:0 0 28px;
+    padding:16px 20px;
+    border:1px solid var(--panel-line);
+    border-left:4px solid var(--amber) !important;
+    border-radius:12px;
+    background:linear-gradient(90deg, #1B2430, #12181F);
+    transition:transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .fde-banner:hover {
+    transform:translateX(4px);
+    border-color:var(--amber);
+    border-left:4px solid var(--amber) !important;
+    box-shadow:0 4px 20px rgba(232, 163, 61, 0.15);
+  }
   .repo-panel h3{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.82rem;
@@ -531,12 +551,23 @@
       <a class="btn btn-outline" href="https://www.linkedin.com/in/satyabhan-bhadoriya-777b28239" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
 
-    <a href="https://satyabhan007.github.io/fde-playbook/" style="display:flex;gap:16px;align-items:center;text-decoration:none;color:var(--text);margin:22px 0 4px;padding:16px 20px;border:1px solid var(--panel-line);border-left:4px solid var(--amber);border-radius:12px;background:linear-gradient(90deg,#1B2430,#12181F);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='var(--amber)';this.style.transform='translateX(4px)'" onmouseout="this.style.borderColor='var(--panel-line)';this.style.transform='none'">
+    <!-- FDE Playbook hero banner -->
+    <a class="fde-banner" href="https://satyabhan007.github.io/fde-playbook/" style="margin:22px 0 12px;" target="_blank" rel="noopener">
       <div aria-hidden="true" style="font-size:30px;line-height:1">&#128214;</div>
       <div>
         <span class="mono" style="color:var(--amber);font-size:.72rem;letter-spacing:.12em">FREE &middot; OPEN PLAYBOOK</span>
         <div style="font-weight:700;margin:2px 0 4px;font-size:1.02rem;color:#ffffff;">The FDE Playbook &mdash; Learning AI vs Engineering AI</div>
         <span style="color:var(--muted);font-size:.88rem">Connected state diagrams + &ldquo;explain like I&rsquo;m 5&rdquo; analogies + click-to-run simulators across 10 real interview topics &mdash; reliability, RAG evaluation, orchestration, memory, cost, security &amp; the build-vs-RAG-vs-fine-tune call. <span style="color:var(--teal);font-weight:700">Open the playbook &rarr;</span></span>
+      </div>
+    </a>
+
+    <!-- AI & DevOps Mastery Course hero banner -->
+    <a class="fde-banner" href="https://satyabhan007.github.io/ai-devops-mastery/" style="margin:0 0 28px;border-left:4px solid #3b82f6 !important;" target="_blank" rel="noopener">
+      <div aria-hidden="true" style="font-size:30px;line-height:1">&#128640;</div>
+      <div>
+        <span class="mono" style="color:#3b82f6;font-size:.72rem;letter-spacing:.12em">NEW &middot; 58 PRODUCTION SCENARIOS</span>
+        <div style="font-weight:700;margin:2px 0 4px;font-size:1.02rem;color:#ffffff;">AI Engineer &amp; DevOps Mastery Course</div>
+        <span style="color:var(--muted);font-size:.88rem">11 interactive modules covering Reasoning Models (o1/R1), Triton kernels, vLLM serving, LangGraph bugs, 50M vector memory math, and FAANG interview loops. <span style="color:#3b82f6;font-weight:700">Explore 11 modules &rarr;</span></span>
       </div>
     </a>
 
@@ -696,7 +727,7 @@
     <p style="color:var(--muted); max-width:58ch; margin:-22px 0 28px; font-size:0.98rem;">Author &amp; maintainer of production-depth engineering curricula and interview playbooks — each its own live site with runnable labs and automated CI. Built outside client work, in the open, continuously growing.</p>
 
     <!-- FDE Playbook Featured Banner -->
-    <a href="https://satyabhan007.github.io/fde-playbook/" style="display:flex;gap:16px;align-items:center;text-decoration:none;color:var(--text);margin:0 0 28px;padding:16px 20px;border:1px solid var(--panel-line);border-left:4px solid var(--amber);border-radius:12px;background:linear-gradient(90deg,#1B2430,#12181F);transition:border-color .2s,transform .2s" onmouseover="this.style.borderColor='var(--amber)';this.style.transform='translateX(4px)'" onmouseout="this.style.borderColor='var(--panel-line)';this.style.transform='none'">
+    <a class="fde-banner" href="https://satyabhan007.github.io/fde-playbook/" target="_blank" rel="noopener">
       <div aria-hidden="true" style="font-size:30px;line-height:1">&#128214;</div>
       <div>
         <span class="mono" style="color:var(--amber);font-size:.72rem;letter-spacing:.12em">FREE &middot; OPEN PLAYBOOK</span>
